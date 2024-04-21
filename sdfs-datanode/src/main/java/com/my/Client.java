@@ -6,13 +6,14 @@ public class Client implements LifeCycle {
 
     @Override
     public void init() {
+        transport = new Transport();
         transport.init();
     }
 
     @Override
     public void start() {
-        DatanodeInfo datanodeInfo = new DatanodeInfo();
-        transport.register(datanodeInfo);
+        transport.register();
+        transport.startHeartbeat();
     }
 
 }

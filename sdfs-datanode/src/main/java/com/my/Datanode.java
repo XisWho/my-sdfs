@@ -6,6 +6,7 @@ public class Datanode implements LifeCycle {
 
     @Override
     public void init() {
+        client = new Client();
         client.init();
     }
 

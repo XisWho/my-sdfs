@@ -4,23 +4,23 @@ public class Namenode implements LifeCycle {
 
     private DatanodeManager datanodeManager;
 
-    private Server server;
+    private NamenodeRpcServer namenodeRpcServer;
 
     public Namenode() {
         this.datanodeManager = new DatanodeManager();
-        this.server = new Server();
+        this.namenodeRpcServer = new NamenodeRpcServer(datanodeManager);
     }
 
     @Override
     public void init() {
         datanodeManager.init();
-        server.init();
+        namenodeRpcServer.init();
     }
 
     @Override
     public void start() {
         datanodeManager.start();
-        server.start();
+        namenodeRpcServer.start();
     }
 
 }
