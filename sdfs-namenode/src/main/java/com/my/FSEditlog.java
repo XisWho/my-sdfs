@@ -86,4 +86,10 @@ public class FSEditlog {
         }
     }
 
+    public void flush() {
+        // 需要先切换buffer
+        doubleBuffer.setReadyToSync();
+
+        doubleBuffer.flush();
+    }
 }

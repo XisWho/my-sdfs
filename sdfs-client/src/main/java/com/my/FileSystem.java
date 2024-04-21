@@ -4,4 +4,6 @@ public interface FileSystem {
 
     void mkdir(String path);
 
+    void shutdown();
+
 }

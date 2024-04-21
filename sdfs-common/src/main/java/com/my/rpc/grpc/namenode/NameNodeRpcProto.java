@@ -44,6 +44,16 @@ public final class NameNodeRpcProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_my_rpc_grpc_namenode_MkdirResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_my_rpc_grpc_namenode_ShutdownResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_my_rpc_grpc_namenode_ShutdownResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -60,16 +70,20 @@ public final class NameNodeRpcProto {
       "tbeatRequest\022\n\n\002ip\030\001 \001(\t\022\020\n\010hostname\030\002 \001" +
       "(\t\"#\n\021HeartbeatResponse\022\016\n\006status\030\001 \001(\005\"" +
       "\034\n\014MkdirRequest\022\014\n\004path\030\001 \001(\t\"\037\n\rMkdirRe" +
-      "sponse\022\016\n\006status\030\001 \001(\0052\264\002\n\017NameNodeServi" +
-      "ce\022a\n\010register\022).com.my.rpc.grpc.namenod" +
-      "e.RegisterRequest\032*.com.my.rpc.grpc.name",
-      "node.RegisterResponse\022d\n\theartbeat\022*.com" +
-      ".my.rpc.grpc.namenode.HeartbeatRequest\032+" +
-      ".com.my.rpc.grpc.namenode.HeartbeatRespo" +
-      "nse\022X\n\005mkdir\022&.com.my.rpc.grpc.namenode." +
-      "MkdirRequest\032\'.com.my.rpc.grpc.namenode." +
-      "MkdirResponseB.\n\030com.my.rpc.grpc.namenod" +
-      "eB\020NameNodeRpcProtoP\001b\006proto3"
+      "sponse\022\016\n\006status\030\001 \001(\005\"\037\n\017ShutdownReques" +
+      "t\022\014\n\004code\030\001 \001(\t\"\"\n\020ShutdownResponse\022\016\n\006s" +
+      "tatus\030\001 \001(\0052\227\003\n\017NameNodeService\022a\n\010regis",
+      "ter\022).com.my.rpc.grpc.namenode.RegisterR" +
+      "equest\032*.com.my.rpc.grpc.namenode.Regist" +
+      "erResponse\022d\n\theartbeat\022*.com.my.rpc.grp" +
+      "c.namenode.HeartbeatRequest\032+.com.my.rpc" +
+      ".grpc.namenode.HeartbeatResponse\022X\n\005mkdi" +
+      "r\022&.com.my.rpc.grpc.namenode.MkdirReques" +
+      "t\032\'.com.my.rpc.grpc.namenode.MkdirRespon" +
+      "se\022a\n\010shutdown\022).com.my.rpc.grpc.namenod" +
+      "e.ShutdownRequest\032*.com.my.rpc.grpc.name" +
+      "node.ShutdownResponseB.\n\030com.my.rpc.grpc",
+      ".namenodeB\020NameNodeRpcProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -118,6 +132,18 @@ public final class NameNodeRpcProto {
     internal_static_com_my_rpc_grpc_namenode_MkdirResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_my_rpc_grpc_namenode_MkdirResponse_descriptor,
+        new java.lang.String[] { "Status", });
+    internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_descriptor,
+        new java.lang.String[] { "Code", });
+    internal_static_com_my_rpc_grpc_namenode_ShutdownResponse_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_my_rpc_grpc_namenode_ShutdownResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_my_rpc_grpc_namenode_ShutdownResponse_descriptor,
         new java.lang.String[] { "Status", });
   }
 

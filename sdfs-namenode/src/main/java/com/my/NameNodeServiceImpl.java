@@ -7,9 +7,12 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 
     public static final Integer STATUS_SUCCESS = 1;
     public static final Integer STATUS_FAILURE = 2;
+    public static final Integer STATUS_SHUTDOWN = 3;
 
     private DataNodeManager datanodeManager;
     private FSNameSystem fsNameSystem;
+
+    private volatile Boolean isRunning = true;
 
     public NameNodeServiceImpl(DataNodeManager datanodeManager, FSNameSystem fsNameSystem) {
         this.datanodeManager = datanodeManager;
@@ -48,12 +51,34 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 
     @Override
     public void mkdir(MkdirRequest request, StreamObserver<MkdirResponse> responseObserver) {
-        fsNameSystem.mkdir(request.getPath());
+        MkdirResponse response;
+        if (!isRunning) {
+            response = MkdirResponse.newBuilder()
+                    .setStatus(STATUS_SHUTDOWN)
+                    .build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+            return;
+        } else {
+            fsNameSystem.mkdir(request.getPath());
 
-        MkdirResponse response = MkdirResponse.newBuilder()
+            response = MkdirResponse.newBuilder()
+                    .setStatus(STATUS_SUCCESS)
+                    .build();
+        }
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void shutdown(ShutdownRequest request, StreamObserver<ShutdownResponse> responseObserver) {
+        isRunning = false;
+        fsNameSystem.shutdown();
+
+        ShutdownResponse response = ShutdownResponse.newBuilder()
                 .setStatus(STATUS_SUCCESS)
                 .build();
-
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

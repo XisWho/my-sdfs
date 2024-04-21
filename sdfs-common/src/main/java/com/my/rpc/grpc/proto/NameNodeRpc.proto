@@ -10,6 +10,7 @@ service NameNodeService {
   rpc register(RegisterRequest) returns (RegisterResponse);
   rpc heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
   rpc mkdir(MkdirRequest) returns (MkdirResponse);
+  rpc shutdown(ShutdownRequest) returns (ShutdownResponse);
 }
 
 message RegisterRequest {
@@ -32,6 +33,13 @@ message MkdirRequest {
   string path = 1;
 }
 message MkdirResponse {
+  int32 status = 1;
+}
+
+message ShutdownRequest {
+  string code = 1;
+}
+message ShutdownResponse {
   int32 status = 1;
 }
 

@@ -17,4 +17,7 @@ public class FSNameSystem {
         return true;
     }
 
+    public void shutdown() {
+        fsEditlog.flush();
+    }
 }
