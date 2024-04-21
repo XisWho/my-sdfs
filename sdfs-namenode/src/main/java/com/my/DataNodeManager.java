@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DatanodeManager implements LifeCycle {
+public class DataNodeManager implements LifeCycle {
 
     private int datanodeInactiveInterval = 60 * 1000;
     private int datanodeActiveCheckInterval = 30 * 1000;
 
-    private Map<String, DatanodeInfo> datanodes;
+    private Map<String, DataNodeInfo> datanodes;
 
     @Override
     public void init() {
@@ -27,7 +27,7 @@ public class DatanodeManager implements LifeCycle {
      * Datanode注册
      * @param datanodeInfo
      */
-    public void register(DatanodeInfo datanodeInfo) {
+    public void register(DataNodeInfo datanodeInfo) {
         String ip = datanodeInfo.getIp();
         String hostname = datanodeInfo.getHostname();
         String key = ip + "_" + hostname;
@@ -35,12 +35,12 @@ public class DatanodeManager implements LifeCycle {
         datanodes.put(key, datanodeInfo);
     }
 
-    public void heartbeat(DatanodeInfo datanodeInfo) {
+    public void heartbeat(DataNodeInfo datanodeInfo) {
         String ip = datanodeInfo.getIp();
         String hostname = datanodeInfo.getHostname();
         String key = ip + "_" + hostname;
-        DatanodeInfo registeredDatanodeInfo = datanodes.get(key);
-        registeredDatanodeInfo.setLatestHeartbeatTime(System.currentTimeMillis());
+        DataNodeInfo registeredDataNodeInfo = datanodes.get(key);
+        registeredDataNodeInfo.setLatestHeartbeatTime(System.currentTimeMillis());
     }
 
     /**
@@ -52,9 +52,9 @@ public class DatanodeManager implements LifeCycle {
         public void run() {
             while (true) {
                 List<String> toRemoveDatanodeKeys = new ArrayList<>();
-                for (Map.Entry<String, DatanodeInfo> entry : datanodes.entrySet()) {
+                for (Map.Entry<String, DataNodeInfo> entry : datanodes.entrySet()) {
                     String key = entry.getKey();
-                    DatanodeInfo datanodeInfo = entry.getValue();
+                    DataNodeInfo datanodeInfo = entry.getValue();
                     long interval = System.currentTimeMillis() - datanodeInfo.getLatestHeartbeatTime();
                     if (interval > datanodeInactiveInterval) {
                         toRemoveDatanodeKeys.add(key);

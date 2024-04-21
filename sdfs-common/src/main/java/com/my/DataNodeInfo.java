@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DatanodeInfo {
+public class DataNodeInfo {
 
     private String ip;
 

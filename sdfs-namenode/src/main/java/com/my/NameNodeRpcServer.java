@@ -1,21 +1,24 @@
 package com.my;
 
-import com.my.rpc.grpc.namenode.NamenodeServiceGrpc;
+import com.my.rpc.grpc.namenode.NameNodeServiceGrpc;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
-public class NamenodeRpcServer implements LifeCycle {
+public class NameNodeRpcServer implements LifeCycle {
 
     private static final int DEFAULT_PORT = 50070;
 
-    private Namenode namenode;
+    private NameNode namenode;
 
-    private DatanodeManager datanodeManager;
+    private DataNodeManager datanodeManager;
+
+    private FSNameSystem fsNameSystem;
 
     private Server server = null;
 
-    public NamenodeRpcServer(DatanodeManager datanodeManager) {
+    public NameNodeRpcServer(DataNodeManager datanodeManager, FSNameSystem fsNameSystem) {
         this.datanodeManager = datanodeManager;
+        this.fsNameSystem = fsNameSystem;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class NamenodeRpcServer implements LifeCycle {
         try {
             server = ServerBuilder
                     .forPort(DEFAULT_PORT)
-                    .addService(NamenodeServiceGrpc.bindService(new NamenodeServiceImpl(datanodeManager)))
+                    .addService(NameNodeServiceGrpc.bindService(new NameNodeServiceImpl(datanodeManager, fsNameSystem)))
                     .build()
                     .start();
         } catch (Exception e) {
@@ -43,7 +46,7 @@ public class NamenodeRpcServer implements LifeCycle {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                NamenodeRpcServer.this.stop();
+                NameNodeRpcServer.this.stop();
             }
         });
     }

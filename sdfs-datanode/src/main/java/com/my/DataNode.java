@@ -1,6 +1,6 @@
 package com.my;
 
-public class Datanode implements LifeCycle {
+public class DataNode implements LifeCycle {
 
     private Client client;
 

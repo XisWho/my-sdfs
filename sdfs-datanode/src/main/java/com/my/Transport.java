@@ -10,7 +10,7 @@ public class Transport implements LifeCycle {
     private static final String NAMENODE_HOSTNAME = "localhost";
     private static final Integer NAMENODE_PORT = 50070;
 
-    private NamenodeServiceGrpc.NamenodeServiceBlockingStub namenode;
+    private NameNodeServiceGrpc.NameNodeServiceBlockingStub namenode;
 
     @Override
     public void init() {
@@ -18,7 +18,7 @@ public class Transport implements LifeCycle {
                 .forAddress(NAMENODE_HOSTNAME, NAMENODE_PORT)
                 .negotiationType(NegotiationType.PLAINTEXT)
                 .build();
-        this.namenode = NamenodeServiceGrpc.newBlockingStub(channel);
+        this.namenode = NameNodeServiceGrpc.newBlockingStub(channel);
     }
 
     @Override

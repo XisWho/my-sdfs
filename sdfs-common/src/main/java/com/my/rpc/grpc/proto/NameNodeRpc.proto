@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package com.my.rpc.grpc.namenode;
+
+option java_multiple_files = true;
+option java_package = "com.my.rpc.grpc.namenode";
+option java_outer_classname = "NameNodeRpcProto";
+
+service NameNodeService {
+  rpc register(RegisterRequest) returns (RegisterResponse);
+  rpc heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc mkdir(MkdirRequest) returns (MkdirResponse);
+}
+
+message RegisterRequest {
+  string ip = 1;
+  string hostname = 2;
+}
+message RegisterResponse {
+  int32 status = 1;
+}
+
+message HeartbeatRequest {
+  string ip = 1;
+  string hostname = 2;
+}
+message HeartbeatResponse {
+  int32 status = 1;
+}
+
+message MkdirRequest {
+  string path = 1;
+}
+message MkdirResponse {
+  int32 status = 1;
+}
+
+// 执行命令
+// 生成message：E:\code\java-code\my-project\my-sdfs\sdfs-common\src\main> .\protoc.exe --java_out=java --proto_path=java java/com/my/rpc/grpc/proto/NameNodeRpc.proto
+// 生成service：E:\code\java-code\my-project\my-sdfs\sdfs-common\src\main> .\protoc.exe --plugin=protoc-gen-grpc-java=protoc-gen-grpc-java-0.13.2-windows-x86_64.exe --grpc-java_out=java --proto_path=java java/com/my/rpc/grpc/proto/NameNodeRpc.proto

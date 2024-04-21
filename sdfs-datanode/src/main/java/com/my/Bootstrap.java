@@ -3,7 +3,7 @@ package com.my;
 public class Bootstrap {
 
     public static void main(String[] args) {
-        Datanode datanode = new Datanode();
+        DataNode datanode = new DataNode();
         datanode.init();
         datanode.start();
     }
