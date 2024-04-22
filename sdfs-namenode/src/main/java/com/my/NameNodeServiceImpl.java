@@ -279,4 +279,16 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         return fetchedEditsLog;
     }
 
+    @Override
+    public void updateCheckpointTxid(UpdateCheckpointTxidRequest request, StreamObserver<UpdateCheckpointTxidResponse> responseObserver) {
+        long txid = request.getTxid();
+        fsNameSystem.setCheckpointTxid(txid);
+
+        UpdateCheckpointTxidResponse response = UpdateCheckpointTxidResponse.newBuilder()
+                .setStatus(1)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

@@ -16,12 +16,14 @@ public class FSImageCheckpointer extends Thread {
 
     private BackupNode backupNode;
     private FSNamesystem namesystem;
+    private NameNodeRpcClient namenode;
 
     private String lastFsimageFile;
 
-    public FSImageCheckpointer(BackupNode backupNode, FSNamesystem namesystem) {
+    public FSImageCheckpointer(BackupNode backupNode, FSNamesystem namesystem, NameNodeRpcClient namenode) {
         this.backupNode = backupNode;
         this.namesystem = namesystem;
+        this.namenode = namenode;
     }
 
     @Override
@@ -48,6 +50,7 @@ public class FSImageCheckpointer extends Thread {
         removeLastFsimageFile();
         writeFSImageFile(fsimage);
         uploadFSImageFile(fsimage);
+        updateCheckpointTxid(fsimage);
     }
 
     /**
@@ -107,6 +110,14 @@ public class FSImageCheckpointer extends Thread {
     private void uploadFSImageFile(FSImage fsimage) throws Exception {
         FSImageUploader fsimageUploader = new FSImageUploader(fsimage);
         fsimageUploader.start();
+    }
+
+    /**
+     * 更新checkpoint txid
+     * @param fsimage
+     */
+    private void updateCheckpointTxid(FSImage fsimage) {
+        namenode.updateCheckpointTxid(fsimage.getMaxTxid());
     }
 
 }

@@ -4,6 +4,10 @@ public class FSNameSystem {
 
     private FSDirectory fsDirectory;
     private FSEditlog fsEditlog;
+    /**
+     * 最近一次checkpoint更新到的txid
+     */
+    private long checkpointTxid;
 
     public FSNameSystem() {
         fsDirectory = new FSDirectory();
@@ -24,4 +28,13 @@ public class FSNameSystem {
     public void shutdown() {
         fsEditlog.flush();
     }
+
+    public void setCheckpointTxid(long txid) {
+        System.out.println("接收到checkpoint txid：" + txid);
+        this.checkpointTxid = txid;
+    }
+    public long getCheckpointTxid() {
+        return checkpointTxid;
+    }
+
 }

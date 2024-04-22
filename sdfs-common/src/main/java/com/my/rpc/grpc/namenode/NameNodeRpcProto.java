@@ -64,6 +64,16 @@ public final class NameNodeRpcProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -84,21 +94,27 @@ public final class NameNodeRpcProto {
       "t\022\014\n\004code\030\001 \001(\005\"\"\n\020ShutdownResponse\022\016\n\006s" +
       "tatus\030\001 \001(\005\"$\n\024FetchEditsLogRequest\022\014\n\004c",
       "ode\030\001 \001(\005\")\n\025FetchEditsLogResponse\022\020\n\010ed" +
-      "itsLog\030\001 \001(\t2\211\004\n\017NameNodeService\022a\n\010regi" +
-      "ster\022).com.my.rpc.grpc.namenode.Register" +
-      "Request\032*.com.my.rpc.grpc.namenode.Regis" +
-      "terResponse\022d\n\theartbeat\022*.com.my.rpc.gr" +
-      "pc.namenode.HeartbeatRequest\032+.com.my.rp" +
-      "c.grpc.namenode.HeartbeatResponse\022X\n\005mkd" +
-      "ir\022&.com.my.rpc.grpc.namenode.MkdirReque" +
-      "st\032\'.com.my.rpc.grpc.namenode.MkdirRespo" +
-      "nse\022a\n\010shutdown\022).com.my.rpc.grpc.nameno",
-      "de.ShutdownRequest\032*.com.my.rpc.grpc.nam" +
-      "enode.ShutdownResponse\022p\n\rfetchEditsLog\022" +
-      "..com.my.rpc.grpc.namenode.FetchEditsLog" +
-      "Request\032/.com.my.rpc.grpc.namenode.Fetch" +
-      "EditsLogResponseB.\n\030com.my.rpc.grpc.name" +
-      "nodeB\020NameNodeRpcProtoP\001b\006proto3"
+      "itsLog\030\001 \001(\t\"+\n\033UpdateCheckpointTxidRequ" +
+      "est\022\014\n\004txid\030\001 \001(\003\".\n\034UpdateCheckpointTxi" +
+      "dResponse\022\016\n\006status\030\001 \001(\0052\221\005\n\017NameNodeSe" +
+      "rvice\022a\n\010register\022).com.my.rpc.grpc.name" +
+      "node.RegisterRequest\032*.com.my.rpc.grpc.n" +
+      "amenode.RegisterResponse\022d\n\theartbeat\022*." +
+      "com.my.rpc.grpc.namenode.HeartbeatReques" +
+      "t\032+.com.my.rpc.grpc.namenode.HeartbeatRe" +
+      "sponse\022X\n\005mkdir\022&.com.my.rpc.grpc.nameno",
+      "de.MkdirRequest\032\'.com.my.rpc.grpc.nameno" +
+      "de.MkdirResponse\022a\n\010shutdown\022).com.my.rp" +
+      "c.grpc.namenode.ShutdownRequest\032*.com.my" +
+      ".rpc.grpc.namenode.ShutdownResponse\022p\n\rf" +
+      "etchEditsLog\022..com.my.rpc.grpc.namenode." +
+      "FetchEditsLogRequest\032/.com.my.rpc.grpc.n" +
+      "amenode.FetchEditsLogResponse\022\205\001\n\024update" +
+      "CheckpointTxid\0225.com.my.rpc.grpc.namenod" +
+      "e.UpdateCheckpointTxidRequest\0326.com.my.r" +
+      "pc.grpc.namenode.UpdateCheckpointTxidRes",
+      "ponseB.\n\030com.my.rpc.grpc.namenodeB\020NameN" +
+      "odeRpcProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -172,6 +188,18 @@ public final class NameNodeRpcProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_descriptor,
         new java.lang.String[] { "EditsLog", });
+    internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidRequest_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidRequest_descriptor,
+        new java.lang.String[] { "Txid", });
+    internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidResponse_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_my_rpc_grpc_namenode_UpdateCheckpointTxidResponse_descriptor,
+        new java.lang.String[] { "Status", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -12,6 +12,7 @@ service NameNodeService {
   rpc mkdir(MkdirRequest) returns (MkdirResponse);
   rpc shutdown(ShutdownRequest) returns (ShutdownResponse);
   rpc fetchEditsLog(FetchEditsLogRequest) returns (FetchEditsLogResponse);
+  rpc updateCheckpointTxid(UpdateCheckpointTxidRequest) returns (UpdateCheckpointTxidResponse);
 }
 
 message RegisterRequest {
@@ -49,6 +50,13 @@ message FetchEditsLogRequest {
 }
 message FetchEditsLogResponse {
   string editsLog = 1;
+}
+
+message UpdateCheckpointTxidRequest {
+  int64 txid = 1;
+}
+message UpdateCheckpointTxidResponse {
+  int32 status = 1;
 }
 
 // 执行命令
