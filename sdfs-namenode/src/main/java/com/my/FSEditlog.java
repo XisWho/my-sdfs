@@ -1,10 +1,22 @@
 package com.my;
 
+import java.io.File;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FSEditlog {
 
     private long txidSeq = 0L;
+
+    /**
+     * editlog日志文件清理的时间间隔
+     */
+    private static final Long EDIT_LOG_CLEAN_INTERVAL = 30L;
+
+    /**
+     * 元数据管理组件
+     */
+    private FSNameSystem namesystem;
 
     private ThreadLocal<Long> localTxid = new ThreadLocal<>();
 
@@ -13,6 +25,13 @@ public class FSEditlog {
     private volatile Boolean isSchedulingSync = false;
     private volatile Boolean isRunningSync = false;
     private volatile Long syncTxid = 0L;
+
+    public FSEditlog(FSNameSystem namesystem) {
+        this.namesystem = namesystem;
+
+        EditLogCleaner editlogCleaner = new EditLogCleaner();
+        editlogCleaner.start();
+    }
 
     public void logEdit(String content) {
         synchronized (this) {
@@ -105,5 +124,49 @@ public class FSEditlog {
             // 此时拉取就肯定可以获取到当前完整的内存缓冲里的数据
             return doubleBuffer.getBufferedEditsLog();
         }
+    }
+
+    /**
+     * 自动清理editlog文件
+     * @author zhonghuashishan
+     *
+     */
+    class EditLogCleaner extends Thread {
+
+        @Override
+        public void run() {
+            System.out.println("editlog日志文件后台清理线程启动......");
+
+            while(true) {
+                try {
+                    TimeUnit.SECONDS.sleep(EDIT_LOG_CLEAN_INTERVAL);
+
+                    // 已经刷入磁盘的txid
+                    List<String> flushedTxids = getFlushedTxids();
+                    if(flushedTxids != null && flushedTxids.size() > 0) {
+                        // 最近一次backupNode同步namenode checkpoint更新到的txid
+                        long checkpointTxid = namesystem.getCheckpointTxid();
+
+                        for(String flushedTxid : flushedTxids) {
+                            long startTxid = Long.valueOf(flushedTxid.split("_")[0]);
+                            long endTxid = Long.valueOf(flushedTxid.split("_")[1]);
+
+                            if(checkpointTxid >= endTxid) {
+                                // 此时就要删除这个文件
+                                File file = new File("E:\\code\\java-code\\my-project\\my-sdfs\\editslog\\edits-"
+                                        + startTxid + "-" + endTxid + ".log");
+                                if(file.exists()) {
+                                    file.delete();
+                                    System.out.println("发现editlog日志文件不需要，进行删除：" + file.getPath());
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 }

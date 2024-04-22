@@ -11,7 +11,7 @@ public class FSNameSystem {
 
     public FSNameSystem() {
         fsDirectory = new FSDirectory();
-        fsEditlog = new FSEditlog();
+        fsEditlog = new FSEditlog(this);
     }
 
     public FSEditlog getFsEditlog() {
