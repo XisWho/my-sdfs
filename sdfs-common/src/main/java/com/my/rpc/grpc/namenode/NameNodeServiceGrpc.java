@@ -66,6 +66,15 @@ public class NameNodeServiceGrpc {
               "com.my.rpc.grpc.namenode.NameNodeService", "fetchEditsLog"),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.FetchEditsLogRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.FetchEditsLogResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest,
+      com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse> METHOD_UPDATE_CHECKPOINT_TXID =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.my.rpc.grpc.namenode.NameNodeService", "updateCheckpointTxid"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse.getDefaultInstance()));
 
   public static NameNodeServiceStub newStub(io.grpc.Channel channel) {
     return new NameNodeServiceStub(channel);
@@ -97,6 +106,9 @@ public class NameNodeServiceGrpc {
 
     public void fetchEditsLog(com.my.rpc.grpc.namenode.FetchEditsLogRequest request,
         io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.FetchEditsLogResponse> responseObserver);
+
+    public void updateCheckpointTxid(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse> responseObserver);
   }
 
   public static interface NameNodeServiceBlockingClient {
@@ -110,6 +122,8 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.ShutdownResponse shutdown(com.my.rpc.grpc.namenode.ShutdownRequest request);
 
     public com.my.rpc.grpc.namenode.FetchEditsLogResponse fetchEditsLog(com.my.rpc.grpc.namenode.FetchEditsLogRequest request);
+
+    public com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse updateCheckpointTxid(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request);
   }
 
   public static interface NameNodeServiceFutureClient {
@@ -128,6 +142,9 @@ public class NameNodeServiceGrpc {
 
     public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.FetchEditsLogResponse> fetchEditsLog(
         com.my.rpc.grpc.namenode.FetchEditsLogRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse> updateCheckpointTxid(
+        com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request);
   }
 
   public static class NameNodeServiceStub extends io.grpc.stub.AbstractStub<NameNodeServiceStub>
@@ -181,6 +198,13 @@ public class NameNodeServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_FETCH_EDITS_LOG, getCallOptions()), request, responseObserver);
     }
+
+    @java.lang.Override
+    public void updateCheckpointTxid(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_UPDATE_CHECKPOINT_TXID, getCallOptions()), request, responseObserver);
+    }
   }
 
   public static class NameNodeServiceBlockingStub extends io.grpc.stub.AbstractStub<NameNodeServiceBlockingStub>
@@ -228,6 +252,12 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.FetchEditsLogResponse fetchEditsLog(com.my.rpc.grpc.namenode.FetchEditsLogRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_FETCH_EDITS_LOG, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse updateCheckpointTxid(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_UPDATE_CHECKPOINT_TXID, getCallOptions(), request);
     }
   }
 
@@ -282,6 +312,13 @@ public class NameNodeServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_FETCH_EDITS_LOG, getCallOptions()), request);
     }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse> updateCheckpointTxid(
+        com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_UPDATE_CHECKPOINT_TXID, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_REGISTER = 0;
@@ -289,6 +326,7 @@ public class NameNodeServiceGrpc {
   private static final int METHODID_MKDIR = 2;
   private static final int METHODID_SHUTDOWN = 3;
   private static final int METHODID_FETCH_EDITS_LOG = 4;
+  private static final int METHODID_UPDATE_CHECKPOINT_TXID = 5;
 
   private static class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -325,6 +363,10 @@ public class NameNodeServiceGrpc {
         case METHODID_FETCH_EDITS_LOG:
           serviceImpl.fetchEditsLog((com.my.rpc.grpc.namenode.FetchEditsLogRequest) request,
               (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.FetchEditsLogResponse>) responseObserver);
+          break;
+        case METHODID_UPDATE_CHECKPOINT_TXID:
+          serviceImpl.updateCheckpointTxid((com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest) request,
+              (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -379,6 +421,13 @@ public class NameNodeServiceGrpc {
               com.my.rpc.grpc.namenode.FetchEditsLogRequest,
               com.my.rpc.grpc.namenode.FetchEditsLogResponse>(
                 serviceImpl, METHODID_FETCH_EDITS_LOG)))
+        .addMethod(
+          METHOD_UPDATE_CHECKPOINT_TXID,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest,
+              com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse>(
+                serviceImpl, METHODID_UPDATE_CHECKPOINT_TXID)))
         .build();
   }
 }
