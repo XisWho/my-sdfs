@@ -104,6 +104,8 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+
+        System.out.println("优雅关闭namenode......");
     }
 
     @Override

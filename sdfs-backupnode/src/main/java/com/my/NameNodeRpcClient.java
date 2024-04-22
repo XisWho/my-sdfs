@@ -16,6 +16,8 @@ public class NameNodeRpcClient {
 
     private NameNodeServiceGrpc.NameNodeServiceBlockingStub namenode;
 
+    private Boolean isNamenodeRunning = true;
+
     public NameNodeRpcClient() {
         ManagedChannel channel = NettyChannelBuilder
                 .forAddress(NAMENODE_HOSTNAME, NAMENODE_PORT)
@@ -44,6 +46,13 @@ public class NameNodeRpcClient {
                 .setTxid(txid)
                 .build();
         namenode.updateCheckpointTxid(request);
+    }
+
+    public Boolean isNamenodeRunning() {
+        return isNamenodeRunning;
+    }
+    public void setIsNamenodeRunning(Boolean isNamenodeRunning) {
+        this.isNamenodeRunning = isNamenodeRunning;
     }
 
 }

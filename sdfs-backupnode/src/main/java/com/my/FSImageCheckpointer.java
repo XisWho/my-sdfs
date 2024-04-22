@@ -12,7 +12,7 @@ public class FSImageCheckpointer extends Thread {
     /**
      * checkpoint操作的时间间隔
      */
-    public static final Integer CHECKPOINT_INTERVAL = 20;
+    public static final Integer CHECKPOINT_INTERVAL = 70;
 
     private BackupNode backupNode;
     private FSNamesystem namesystem;
@@ -33,6 +33,12 @@ public class FSImageCheckpointer extends Thread {
         while (backupNode.isRunning()) {
             try {
                 TimeUnit.SECONDS.sleep(CHECKPOINT_INTERVAL);
+
+                if(!namenode.isNamenodeRunning()) {
+                    System.out.println("namenode当前无法访问，不执行checkpoint......");
+                    continue;
+                }
+
                 System.out.println("准备执行checkpoint操作.....");
                 doCheckpoint();
             } catch (Exception e) {

@@ -51,8 +51,11 @@ public class EditsLogFetcher extends Thread {
                     Thread.sleep(1000);
                     System.out.println("拉取到的edits log不足10条数据，等待1秒后再次继续去拉取");
                 }
+
+                namenode.setIsNamenodeRunning(true);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                namenode.setIsNamenodeRunning(false);
             }
         }
     }

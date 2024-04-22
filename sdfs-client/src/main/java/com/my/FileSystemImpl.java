@@ -48,17 +48,17 @@ public class FileSystemImpl implements FileSystem {
 
     public static void main(String[] args) throws InterruptedException {
         FileSystem fileSystem = new FileSystemImpl();
-
-        for (int i = 1; i <= 10; i++) {
-            new Thread(() -> {
-                for (int j = 1; j <= 50; j++) {
-                    fileSystem.mkdir("/usr/warehouse/hive-"+ Thread.currentThread().getName()+"-"+j);
-                }
-            }).start();
-        }
-
-        Thread.sleep(100000);
-        // fileSystem.shutdown();
+//
+//        for (int i = 1; i <= 10; i++) {
+//            new Thread(() -> {
+//                for (int j = 1; j <= 50; j++) {
+//                    fileSystem.mkdir("/usr/warehouse/spark-"+ Thread.currentThread().getName()+"-"+j);
+//                }
+//            }).start();
+//        }
+//
+//        Thread.sleep(100000);
+         fileSystem.shutdown();
     }
 
 }
