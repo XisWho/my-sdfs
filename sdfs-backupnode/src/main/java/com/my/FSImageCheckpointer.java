@@ -12,7 +12,7 @@ public class FSImageCheckpointer extends Thread {
     /**
      * checkpoint操作的时间间隔
      */
-    public static final Integer CHECKPOINT_INTERVAL = 10;
+    public static final Integer CHECKPOINT_INTERVAL = 20;
 
     private BackupNode backupNode;
     private FSNamesystem namesystem;
@@ -31,12 +31,8 @@ public class FSImageCheckpointer extends Thread {
         while (backupNode.isRunning()) {
             try {
                 TimeUnit.SECONDS.sleep(CHECKPOINT_INTERVAL);
-
-                // 就可以触发这个checkpoint操作，去把内存里的数据写入磁盘就可以了
-                // 在写数据的这个过程中，你必须是
-                removeLastFsimageFile();
-                FSImage fsimage = namesystem.getFSImage();
-                doCheckpoint(fsimage);
+                System.out.println("准备执行checkpoint操作.....");
+                doCheckpoint();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -45,17 +41,27 @@ public class FSImageCheckpointer extends Thread {
 
     /**
      * 将fsiamge持久化到磁盘上去
-     * @param fsimage
      * @throws Exception
      */
-    private void doCheckpoint(FSImage fsimage) throws Exception {
+    private void doCheckpoint() throws Exception {
+        FSImage fsimage = namesystem.getFSImage();
+        removeLastFsimageFile();
+        writeFSImageFile(fsimage);
+        uploadFSImageFile(fsimage);
+    }
+
+    /**
+     * 写入最新的fsimage文件
+     * @throws Exception
+     */
+    private void writeFSImageFile(FSImage fsimage) throws Exception {
         ByteBuffer buffer = ByteBuffer.wrap(fsimage.getFsimageJson().getBytes());
 
         // fsimage的文件名的格式，他呢应该是包含了当前这个里面最后一个editslog的txid
         String fsimageFilePath = "E:\\code\\java-code\\my-project\\my-sdfs\\backupnode\\fsimage-"
                 + fsimage.getMaxTxid() + ".image";
+
         lastFsimageFile = fsimageFilePath;
-        System.out.println("doCheckpoint="+fsimageFilePath);
 
         RandomAccessFile file = null;
         FileOutputStream out = null;
@@ -91,6 +97,16 @@ public class FSImageCheckpointer extends Thread {
                 file.delete();
             }
         }
+    }
+
+    /**
+     * 上传fsimage文件
+     * @param fsimage
+     * @throws Exception
+     */
+    private void uploadFSImageFile(FSImage fsimage) throws Exception {
+        FSImageUploader fsimageUploader = new FSImageUploader(fsimage);
+        fsimageUploader.start();
     }
 
 }

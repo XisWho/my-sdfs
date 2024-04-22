@@ -6,12 +6,14 @@ public class NameNode implements LifeCycle {
     private FSNameSystem fsNameSystem;
 
     private NameNodeRpcServer namenodeRpcServer;
+    private FSImageUploadServer fsImageUploadServer;
 
 
     public NameNode() {
         this.datanodeManager = new DataNodeManager();
         this.fsNameSystem = new FSNameSystem();
         this.namenodeRpcServer = new NameNodeRpcServer(datanodeManager, fsNameSystem);
+        this.fsImageUploadServer = new FSImageUploadServer();
     }
 
     @Override
@@ -24,6 +26,7 @@ public class NameNode implements LifeCycle {
     public void start() {
         datanodeManager.start();
         namenodeRpcServer.start();
+        fsImageUploadServer.start();
     }
 
 }
