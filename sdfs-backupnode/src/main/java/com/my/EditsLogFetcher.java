@@ -7,17 +7,20 @@ public class EditsLogFetcher extends Thread {
 
     public static final Integer BACKUP_NODE_FETCH_SIZE = 10;
 
+    private BackupNode backupNode;
+
     private NameNodeRpcClient namenode;
     private FSNamesystem namesystem;
 
-    public EditsLogFetcher(FSNamesystem namesystem, NameNodeRpcClient namenode) {
+    public EditsLogFetcher(BackupNode backupNode, FSNamesystem namesystem, NameNodeRpcClient namenode) {
+        this.backupNode = backupNode;
         this.namesystem = namesystem;
         this.namenode = namenode;
     }
 
     @Override
     public void run() {
-        while(true) {
+        while(backupNode.isRunning()) {
             try {
                 JSONArray editsLogs = namenode.fetchEditsLog();
 
@@ -34,8 +37,9 @@ public class EditsLogFetcher extends Thread {
 
                     if(op.equals("MKDIR")) {
                         String path = editsLog.getString("PATH");
+                        long txid = editsLog.getLongValue("txid");
                         try {
-                            namesystem.mkdir(path);
+                            namesystem.mkdir(txid, path);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

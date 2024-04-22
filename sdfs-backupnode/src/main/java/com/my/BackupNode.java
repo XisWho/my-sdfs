@@ -2,6 +2,8 @@ package com.my;
 
 public class BackupNode {
 
+    private volatile Boolean isRunning = true;
+
     private FSNamesystem namesystem;
     private NameNodeRpcClient namenode;
 
@@ -17,8 +19,15 @@ public class BackupNode {
     }
 
     public void start() {
-        EditsLogFetcher editsLogFetcher = new EditsLogFetcher(namesystem, namenode);
+        EditsLogFetcher editsLogFetcher = new EditsLogFetcher(this, namesystem, namenode);
         editsLogFetcher.start();
+
+        FSImageCheckpointer fsImageCheckpointer = new FSImageCheckpointer(this, namesystem);
+        fsImageCheckpointer.start();
+    }
+
+    public Boolean isRunning() {
+        return isRunning;
     }
 
 }
