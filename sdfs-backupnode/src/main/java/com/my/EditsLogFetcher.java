@@ -22,6 +22,12 @@ public class EditsLogFetcher extends Thread {
     public void run() {
         while(backupNode.isRunning()) {
             try {
+                if(!namesystem.isFinishedRecover()) {
+                    System.out.println("当前还没完成元数据恢复，不进行editlog同步......");
+                    Thread.sleep(1000);
+                    continue;
+                }
+
                 long syncedTxid = namesystem.getSyncedTxid();
                 JSONArray editsLogs = namenode.fetchEditsLog(syncedTxid);
 

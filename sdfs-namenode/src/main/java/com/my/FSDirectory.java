@@ -87,6 +87,8 @@ public class FSDirectory {
         private String path;
         private List<INode> children;
 
+        public INode() {}
+
         public INode(String path) {
             this.path = path;
             this.children = new LinkedList<INode>();

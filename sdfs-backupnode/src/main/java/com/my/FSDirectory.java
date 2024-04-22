@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class FSDirectory {
 
-    private INodeDirectory dirTree;
+    private INode dirTree;
 
     private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     /**
@@ -18,7 +18,23 @@ public class FSDirectory {
     private long maxTxid = 0;
 
     public FSDirectory() {
-        dirTree = new INodeDirectory("/");
+        dirTree = new INode("/");
+    }
+
+    public INode getDirTree() {
+        return dirTree;
+    }
+
+    public void setDirTree(INode dirTree) {
+        this.dirTree = dirTree;
+    }
+
+    public long getMaxTxid() {
+        return maxTxid;
+    }
+
+    public void setMaxTxid(long maxTxid) {
+        this.maxTxid = maxTxid;
     }
 
     public void mkdir(long txid, String path) {
@@ -34,21 +50,21 @@ public class FSDirectory {
             maxTxid = txid;
 
             String[] pathes = path.split("/");
-            INodeDirectory parent = dirTree;
+            INode parent = dirTree;
 
             for (String splitedPath : pathes) { // ["","usr","warehosue","hive"]
                 if (splitedPath.trim().equals("")) {
                     continue;
                 }
 
-                INodeDirectory dir = findDirectory(parent, splitedPath); // parent="/usr"
+                INode dir = findDirectory(parent, splitedPath); // parent="/usr"
 
                 if (dir != null) {
                     parent = dir;
                     continue;
                 }
 
-                INodeDirectory child = new INodeDirectory(splitedPath); // "/usr"
+                INode child = new INode(splitedPath); // "/usr"
                 parent.addChild(child);
                 parent = child;
             }
@@ -66,14 +82,14 @@ public class FSDirectory {
      * @param path
      * @return
      */
-    private INodeDirectory findDirectory(INodeDirectory dir, String path) {
+    private INode findDirectory(INode dir, String path) {
         if(dir.getChildren().size() == 0) {
             return null;
         }
 
         for(INode child : dir.getChildren()) {
-            if(child instanceof INodeDirectory) {
-                INodeDirectory childDir = (INodeDirectory) child;
+            if(child instanceof INode) {
+                INode childDir = (INode) child;
                 if((childDir.getPath().equals(path))) {
                     return childDir;
                 }
@@ -83,13 +99,13 @@ public class FSDirectory {
         return null;
     }
 
-    private void printDirTree(INodeDirectory dirTree, String blank) {
+    private void printDirTree(INode dirTree, String blank) {
         if(dirTree.getChildren().size() == 0) {
             return;
         }
         for(INode dir : dirTree.getChildren()) {
-            System.out.println(blank + ((INodeDirectory) dir).getPath());
-            printDirTree((INodeDirectory) dir, blank + " ");
+            System.out.println(blank + ((INode) dir).getPath());
+            printDirTree((INode) dir, blank + " ");
         }
     }
 
@@ -109,15 +125,14 @@ public class FSDirectory {
         return fsimage;
     }
 
-    interface INode {
-    }
-
-    class INodeDirectory implements INode {
+    public static class INode {
 
         private String path;
         private List<INode> children;
 
-        public INodeDirectory(String path) {
+        public INode() {}
+
+        public INode(String path) {
             this.path = path;
             this.children = new LinkedList<INode>();
         }
@@ -141,24 +156,6 @@ public class FSDirectory {
         @Override
         public String toString() {
             return "INodeDirectory [path=" + path + ", children=" + children + "]";
-        }
-
-    }
-
-    class INodeFile implements INode {
-
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "INodeFile [name=" + name + "]";
         }
 
     }
