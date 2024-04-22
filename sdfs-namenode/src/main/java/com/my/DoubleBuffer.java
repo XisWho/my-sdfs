@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DoubleBuffer {
 
@@ -15,6 +18,11 @@ public class DoubleBuffer {
     private EditLogBuffer syncBuffer = new EditLogBuffer();
 
     long startTxid = 1L;
+
+    /**
+     * 已经输入磁盘中的txid范围
+     */
+    private List<String> flushedTxids = new CopyOnWriteArrayList<>();
 
     public void write(EditLog log) {
         currentBuffer.write(log);
@@ -36,6 +44,18 @@ public class DoubleBuffer {
     public void flush() {
         syncBuffer.flush();
         syncBuffer.clear();
+    }
+
+    public List<String> getFlushedTxids() {
+        return flushedTxids;
+    }
+
+    public String[] getBufferedEditsLog() {
+        if(currentBuffer.size() == 0) {
+            return null;
+        }
+        String editsLogRawData = new String(currentBuffer.getBufferData());
+        return editsLogRawData.split("\n");
     }
 
     class EditLogBuffer {
@@ -73,6 +93,7 @@ public class DoubleBuffer {
 
             String editsLogFilePath = "E:\\code\\java-code\\my-project\\my-sdfs\\editslog\\edits-"
                     + startTxid + "-" + endTxid + ".log";
+            flushedTxids.add(startTxid + "_" + endTxid);
 
             RandomAccessFile file = null;
             FileOutputStream out = null;
@@ -108,6 +129,10 @@ public class DoubleBuffer {
 
         public void clear() {
             out.reset();
+        }
+
+        public byte[] getBufferData() {
+            return out.toByteArray();
         }
     }
 }

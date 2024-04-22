@@ -10,6 +10,10 @@ public class FSNameSystem {
         fsEditlog = new FSEditlog();
     }
 
+    public FSEditlog getFsEditlog() {
+        return fsEditlog;
+    }
+
     public Boolean mkdir(String path) {
         fsDirectory.mkdir(path);
         fsEditlog.logEdit("{'OP':'MKDIR','PATH':'" + path + "'}");

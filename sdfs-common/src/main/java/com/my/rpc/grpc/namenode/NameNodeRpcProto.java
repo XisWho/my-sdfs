@@ -54,6 +54,16 @@ public final class NameNodeRpcProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_my_rpc_grpc_namenode_ShutdownResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -71,19 +81,24 @@ public final class NameNodeRpcProto {
       "(\t\"#\n\021HeartbeatResponse\022\016\n\006status\030\001 \001(\005\"" +
       "\034\n\014MkdirRequest\022\014\n\004path\030\001 \001(\t\"\037\n\rMkdirRe" +
       "sponse\022\016\n\006status\030\001 \001(\005\"\037\n\017ShutdownReques" +
-      "t\022\014\n\004code\030\001 \001(\t\"\"\n\020ShutdownResponse\022\016\n\006s" +
-      "tatus\030\001 \001(\0052\227\003\n\017NameNodeService\022a\n\010regis",
-      "ter\022).com.my.rpc.grpc.namenode.RegisterR" +
-      "equest\032*.com.my.rpc.grpc.namenode.Regist" +
-      "erResponse\022d\n\theartbeat\022*.com.my.rpc.grp" +
-      "c.namenode.HeartbeatRequest\032+.com.my.rpc" +
-      ".grpc.namenode.HeartbeatResponse\022X\n\005mkdi" +
-      "r\022&.com.my.rpc.grpc.namenode.MkdirReques" +
-      "t\032\'.com.my.rpc.grpc.namenode.MkdirRespon" +
-      "se\022a\n\010shutdown\022).com.my.rpc.grpc.namenod" +
-      "e.ShutdownRequest\032*.com.my.rpc.grpc.name" +
-      "node.ShutdownResponseB.\n\030com.my.rpc.grpc",
-      ".namenodeB\020NameNodeRpcProtoP\001b\006proto3"
+      "t\022\014\n\004code\030\001 \001(\005\"\"\n\020ShutdownResponse\022\016\n\006s" +
+      "tatus\030\001 \001(\005\"$\n\024FetchEditsLogRequest\022\014\n\004c",
+      "ode\030\001 \001(\005\")\n\025FetchEditsLogResponse\022\020\n\010ed" +
+      "itsLog\030\001 \001(\t2\211\004\n\017NameNodeService\022a\n\010regi" +
+      "ster\022).com.my.rpc.grpc.namenode.Register" +
+      "Request\032*.com.my.rpc.grpc.namenode.Regis" +
+      "terResponse\022d\n\theartbeat\022*.com.my.rpc.gr" +
+      "pc.namenode.HeartbeatRequest\032+.com.my.rp" +
+      "c.grpc.namenode.HeartbeatResponse\022X\n\005mkd" +
+      "ir\022&.com.my.rpc.grpc.namenode.MkdirReque" +
+      "st\032\'.com.my.rpc.grpc.namenode.MkdirRespo" +
+      "nse\022a\n\010shutdown\022).com.my.rpc.grpc.nameno",
+      "de.ShutdownRequest\032*.com.my.rpc.grpc.nam" +
+      "enode.ShutdownResponse\022p\n\rfetchEditsLog\022" +
+      "..com.my.rpc.grpc.namenode.FetchEditsLog" +
+      "Request\032/.com.my.rpc.grpc.namenode.Fetch" +
+      "EditsLogResponseB.\n\030com.my.rpc.grpc.name" +
+      "nodeB\020NameNodeRpcProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -145,6 +160,18 @@ public final class NameNodeRpcProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_my_rpc_grpc_namenode_ShutdownResponse_descriptor,
         new java.lang.String[] { "Status", });
+    internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_descriptor,
+        new java.lang.String[] { "Code", });
+    internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_descriptor,
+        new java.lang.String[] { "EditsLog", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

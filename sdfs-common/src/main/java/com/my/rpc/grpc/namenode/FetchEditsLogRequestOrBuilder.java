@@ -3,8 +3,8 @@
 
 package com.my.rpc.grpc.namenode;
 
-public interface ShutdownRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.my.rpc.grpc.namenode.ShutdownRequest)
+public interface FetchEditsLogRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.my.rpc.grpc.namenode.FetchEditsLogRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**

@@ -48,6 +48,24 @@ public class NameNodeServiceGrpc {
               "com.my.rpc.grpc.namenode.NameNodeService", "mkdir"),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.MkdirRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.MkdirResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.my.rpc.grpc.namenode.ShutdownRequest,
+      com.my.rpc.grpc.namenode.ShutdownResponse> METHOD_SHUTDOWN =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.my.rpc.grpc.namenode.NameNodeService", "shutdown"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.ShutdownRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.ShutdownResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.my.rpc.grpc.namenode.FetchEditsLogRequest,
+      com.my.rpc.grpc.namenode.FetchEditsLogResponse> METHOD_FETCH_EDITS_LOG =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.my.rpc.grpc.namenode.NameNodeService", "fetchEditsLog"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.FetchEditsLogRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.FetchEditsLogResponse.getDefaultInstance()));
 
   public static NameNodeServiceStub newStub(io.grpc.Channel channel) {
     return new NameNodeServiceStub(channel);
@@ -73,6 +91,12 @@ public class NameNodeServiceGrpc {
 
     public void mkdir(com.my.rpc.grpc.namenode.MkdirRequest request,
         io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.MkdirResponse> responseObserver);
+
+    public void shutdown(com.my.rpc.grpc.namenode.ShutdownRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.ShutdownResponse> responseObserver);
+
+    public void fetchEditsLog(com.my.rpc.grpc.namenode.FetchEditsLogRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.FetchEditsLogResponse> responseObserver);
   }
 
   public static interface NameNodeServiceBlockingClient {
@@ -82,6 +106,10 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.HeartbeatResponse heartbeat(com.my.rpc.grpc.namenode.HeartbeatRequest request);
 
     public com.my.rpc.grpc.namenode.MkdirResponse mkdir(com.my.rpc.grpc.namenode.MkdirRequest request);
+
+    public com.my.rpc.grpc.namenode.ShutdownResponse shutdown(com.my.rpc.grpc.namenode.ShutdownRequest request);
+
+    public com.my.rpc.grpc.namenode.FetchEditsLogResponse fetchEditsLog(com.my.rpc.grpc.namenode.FetchEditsLogRequest request);
   }
 
   public static interface NameNodeServiceFutureClient {
@@ -94,6 +122,12 @@ public class NameNodeServiceGrpc {
 
     public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.MkdirResponse> mkdir(
         com.my.rpc.grpc.namenode.MkdirRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.ShutdownResponse> shutdown(
+        com.my.rpc.grpc.namenode.ShutdownRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.FetchEditsLogResponse> fetchEditsLog(
+        com.my.rpc.grpc.namenode.FetchEditsLogRequest request);
   }
 
   public static class NameNodeServiceStub extends io.grpc.stub.AbstractStub<NameNodeServiceStub>
@@ -133,6 +167,20 @@ public class NameNodeServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_MKDIR, getCallOptions()), request, responseObserver);
     }
+
+    @java.lang.Override
+    public void shutdown(com.my.rpc.grpc.namenode.ShutdownRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.ShutdownResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_SHUTDOWN, getCallOptions()), request, responseObserver);
+    }
+
+    @java.lang.Override
+    public void fetchEditsLog(com.my.rpc.grpc.namenode.FetchEditsLogRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.FetchEditsLogResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_FETCH_EDITS_LOG, getCallOptions()), request, responseObserver);
+    }
   }
 
   public static class NameNodeServiceBlockingStub extends io.grpc.stub.AbstractStub<NameNodeServiceBlockingStub>
@@ -168,6 +216,18 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.MkdirResponse mkdir(com.my.rpc.grpc.namenode.MkdirRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_MKDIR, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.my.rpc.grpc.namenode.ShutdownResponse shutdown(com.my.rpc.grpc.namenode.ShutdownRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_SHUTDOWN, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.my.rpc.grpc.namenode.FetchEditsLogResponse fetchEditsLog(com.my.rpc.grpc.namenode.FetchEditsLogRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_FETCH_EDITS_LOG, getCallOptions(), request);
     }
   }
 
@@ -208,11 +268,27 @@ public class NameNodeServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_MKDIR, getCallOptions()), request);
     }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.ShutdownResponse> shutdown(
+        com.my.rpc.grpc.namenode.ShutdownRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_SHUTDOWN, getCallOptions()), request);
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.FetchEditsLogResponse> fetchEditsLog(
+        com.my.rpc.grpc.namenode.FetchEditsLogRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_FETCH_EDITS_LOG, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_REGISTER = 0;
   private static final int METHODID_HEARTBEAT = 1;
   private static final int METHODID_MKDIR = 2;
+  private static final int METHODID_SHUTDOWN = 3;
+  private static final int METHODID_FETCH_EDITS_LOG = 4;
 
   private static class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -241,6 +317,14 @@ public class NameNodeServiceGrpc {
         case METHODID_MKDIR:
           serviceImpl.mkdir((com.my.rpc.grpc.namenode.MkdirRequest) request,
               (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.MkdirResponse>) responseObserver);
+          break;
+        case METHODID_SHUTDOWN:
+          serviceImpl.shutdown((com.my.rpc.grpc.namenode.ShutdownRequest) request,
+              (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.ShutdownResponse>) responseObserver);
+          break;
+        case METHODID_FETCH_EDITS_LOG:
+          serviceImpl.fetchEditsLog((com.my.rpc.grpc.namenode.FetchEditsLogRequest) request,
+              (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.FetchEditsLogResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -281,6 +365,20 @@ public class NameNodeServiceGrpc {
               com.my.rpc.grpc.namenode.MkdirRequest,
               com.my.rpc.grpc.namenode.MkdirResponse>(
                 serviceImpl, METHODID_MKDIR)))
+        .addMethod(
+          METHOD_SHUTDOWN,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.my.rpc.grpc.namenode.ShutdownRequest,
+              com.my.rpc.grpc.namenode.ShutdownResponse>(
+                serviceImpl, METHODID_SHUTDOWN)))
+        .addMethod(
+          METHOD_FETCH_EDITS_LOG,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.my.rpc.grpc.namenode.FetchEditsLogRequest,
+              com.my.rpc.grpc.namenode.FetchEditsLogResponse>(
+                serviceImpl, METHODID_FETCH_EDITS_LOG)))
         .build();
   }
 }

@@ -1,5 +1,7 @@
 package com.my;
 
+import java.util.List;
+
 public class FSEditlog {
 
     private long txidSeq = 0L;
@@ -91,5 +93,17 @@ public class FSEditlog {
         doubleBuffer.setReadyToSync();
 
         doubleBuffer.flush();
+    }
+
+    public List<String> getFlushedTxids() {
+        return doubleBuffer.getFlushedTxids();
+    }
+
+    public String[] getBufferedEditsLog() {
+        synchronized(this) { // 这边此时只要获取到了锁，那么就意味着
+            // 肯定没有人当前在修改这个内存数据了
+            // 此时拉取就肯定可以获取到当前完整的内存缓冲里的数据
+            return doubleBuffer.getBufferedEditsLog();
+        }
     }
 }

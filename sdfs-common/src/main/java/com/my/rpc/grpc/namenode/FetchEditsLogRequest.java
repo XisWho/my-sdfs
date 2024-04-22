@@ -4,17 +4,17 @@
 package com.my.rpc.grpc.namenode;
 
 /**
- * Protobuf type {@code com.my.rpc.grpc.namenode.ShutdownRequest}
+ * Protobuf type {@code com.my.rpc.grpc.namenode.FetchEditsLogRequest}
  */
-public  final class ShutdownRequest extends
+public  final class FetchEditsLogRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.my.rpc.grpc.namenode.ShutdownRequest)
-    ShutdownRequestOrBuilder {
-  // Use ShutdownRequest.newBuilder() to construct.
-  private ShutdownRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // @@protoc_insertion_point(message_implements:com.my.rpc.grpc.namenode.FetchEditsLogRequest)
+    FetchEditsLogRequestOrBuilder {
+  // Use FetchEditsLogRequest.newBuilder() to construct.
+  private FetchEditsLogRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private ShutdownRequest() {
+  private FetchEditsLogRequest() {
     code_ = 0;
   }
 
@@ -23,7 +23,7 @@ public  final class ShutdownRequest extends
   getUnknownFields() {
     return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
   }
-  private ShutdownRequest(
+  private FetchEditsLogRequest(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -61,14 +61,14 @@ public  final class ShutdownRequest extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_descriptor;
+    return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_fieldAccessorTable
+    return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.my.rpc.grpc.namenode.ShutdownRequest.class, com.my.rpc.grpc.namenode.ShutdownRequest.Builder.class);
+            com.my.rpc.grpc.namenode.FetchEditsLogRequest.class, com.my.rpc.grpc.namenode.FetchEditsLogRequest.Builder.class);
   }
 
   public static final int CODE_FIELD_NUMBER = 1;
@@ -116,10 +116,10 @@ public  final class ShutdownRequest extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.my.rpc.grpc.namenode.ShutdownRequest)) {
+    if (!(obj instanceof com.my.rpc.grpc.namenode.FetchEditsLogRequest)) {
       return super.equals(obj);
     }
-    com.my.rpc.grpc.namenode.ShutdownRequest other = (com.my.rpc.grpc.namenode.ShutdownRequest) obj;
+    com.my.rpc.grpc.namenode.FetchEditsLogRequest other = (com.my.rpc.grpc.namenode.FetchEditsLogRequest) obj;
 
     boolean result = true;
     result = result && (getCode()
@@ -141,58 +141,58 @@ public  final class ShutdownRequest extends
     return hash;
   }
 
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseFrom(
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseFrom(
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseFrom(byte[] data)
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseFrom(
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseFrom(java.io.InputStream input)
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseFrom(
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseDelimitedFrom(java.io.InputStream input)
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseDelimitedFrom(
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseFrom(
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.my.rpc.grpc.namenode.ShutdownRequest parseFrom(
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -204,7 +204,7 @@ public  final class ShutdownRequest extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.my.rpc.grpc.namenode.ShutdownRequest prototype) {
+  public static Builder newBuilder(com.my.rpc.grpc.namenode.FetchEditsLogRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -219,25 +219,25 @@ public  final class ShutdownRequest extends
     return builder;
   }
   /**
-   * Protobuf type {@code com.my.rpc.grpc.namenode.ShutdownRequest}
+   * Protobuf type {@code com.my.rpc.grpc.namenode.FetchEditsLogRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.my.rpc.grpc.namenode.ShutdownRequest)
-      com.my.rpc.grpc.namenode.ShutdownRequestOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.my.rpc.grpc.namenode.FetchEditsLogRequest)
+      com.my.rpc.grpc.namenode.FetchEditsLogRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_descriptor;
+      return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_fieldAccessorTable
+      return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.my.rpc.grpc.namenode.ShutdownRequest.class, com.my.rpc.grpc.namenode.ShutdownRequest.Builder.class);
+              com.my.rpc.grpc.namenode.FetchEditsLogRequest.class, com.my.rpc.grpc.namenode.FetchEditsLogRequest.Builder.class);
     }
 
-    // Construct using com.my.rpc.grpc.namenode.ShutdownRequest.newBuilder()
+    // Construct using com.my.rpc.grpc.namenode.FetchEditsLogRequest.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -261,23 +261,23 @@ public  final class ShutdownRequest extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_ShutdownRequest_descriptor;
+      return com.my.rpc.grpc.namenode.NameNodeRpcProto.internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_descriptor;
     }
 
-    public com.my.rpc.grpc.namenode.ShutdownRequest getDefaultInstanceForType() {
-      return com.my.rpc.grpc.namenode.ShutdownRequest.getDefaultInstance();
+    public com.my.rpc.grpc.namenode.FetchEditsLogRequest getDefaultInstanceForType() {
+      return com.my.rpc.grpc.namenode.FetchEditsLogRequest.getDefaultInstance();
     }
 
-    public com.my.rpc.grpc.namenode.ShutdownRequest build() {
-      com.my.rpc.grpc.namenode.ShutdownRequest result = buildPartial();
+    public com.my.rpc.grpc.namenode.FetchEditsLogRequest build() {
+      com.my.rpc.grpc.namenode.FetchEditsLogRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public com.my.rpc.grpc.namenode.ShutdownRequest buildPartial() {
-      com.my.rpc.grpc.namenode.ShutdownRequest result = new com.my.rpc.grpc.namenode.ShutdownRequest(this);
+    public com.my.rpc.grpc.namenode.FetchEditsLogRequest buildPartial() {
+      com.my.rpc.grpc.namenode.FetchEditsLogRequest result = new com.my.rpc.grpc.namenode.FetchEditsLogRequest(this);
       result.code_ = code_;
       onBuilt();
       return result;
@@ -310,16 +310,16 @@ public  final class ShutdownRequest extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.my.rpc.grpc.namenode.ShutdownRequest) {
-        return mergeFrom((com.my.rpc.grpc.namenode.ShutdownRequest)other);
+      if (other instanceof com.my.rpc.grpc.namenode.FetchEditsLogRequest) {
+        return mergeFrom((com.my.rpc.grpc.namenode.FetchEditsLogRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.my.rpc.grpc.namenode.ShutdownRequest other) {
-      if (other == com.my.rpc.grpc.namenode.ShutdownRequest.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.my.rpc.grpc.namenode.FetchEditsLogRequest other) {
+      if (other == com.my.rpc.grpc.namenode.FetchEditsLogRequest.getDefaultInstance()) return this;
       if (other.getCode() != 0) {
         setCode(other.getCode());
       }
@@ -335,11 +335,11 @@ public  final class ShutdownRequest extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.my.rpc.grpc.namenode.ShutdownRequest parsedMessage = null;
+      com.my.rpc.grpc.namenode.FetchEditsLogRequest parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.my.rpc.grpc.namenode.ShutdownRequest) e.getUnfinishedMessage();
+        parsedMessage = (com.my.rpc.grpc.namenode.FetchEditsLogRequest) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -385,39 +385,39 @@ public  final class ShutdownRequest extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.my.rpc.grpc.namenode.ShutdownRequest)
+    // @@protoc_insertion_point(builder_scope:com.my.rpc.grpc.namenode.FetchEditsLogRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:com.my.rpc.grpc.namenode.ShutdownRequest)
-  private static final com.my.rpc.grpc.namenode.ShutdownRequest DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.my.rpc.grpc.namenode.FetchEditsLogRequest)
+  private static final com.my.rpc.grpc.namenode.FetchEditsLogRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.my.rpc.grpc.namenode.ShutdownRequest();
+    DEFAULT_INSTANCE = new com.my.rpc.grpc.namenode.FetchEditsLogRequest();
   }
 
-  public static com.my.rpc.grpc.namenode.ShutdownRequest getDefaultInstance() {
+  public static com.my.rpc.grpc.namenode.FetchEditsLogRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<ShutdownRequest>
-      PARSER = new com.google.protobuf.AbstractParser<ShutdownRequest>() {
-    public ShutdownRequest parsePartialFrom(
+  private static final com.google.protobuf.Parser<FetchEditsLogRequest>
+      PARSER = new com.google.protobuf.AbstractParser<FetchEditsLogRequest>() {
+    public FetchEditsLogRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ShutdownRequest(input, extensionRegistry);
+        return new FetchEditsLogRequest(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<ShutdownRequest> parser() {
+  public static com.google.protobuf.Parser<FetchEditsLogRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<ShutdownRequest> getParserForType() {
+  public com.google.protobuf.Parser<FetchEditsLogRequest> getParserForType() {
     return PARSER;
   }
 
-  public com.my.rpc.grpc.namenode.ShutdownRequest getDefaultInstanceForType() {
+  public com.my.rpc.grpc.namenode.FetchEditsLogRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -37,7 +37,7 @@ public class FileSystemImpl implements FileSystem {
     public void shutdown() {
         try {
             ShutdownRequest request = ShutdownRequest.newBuilder()
-                    .setCode("1")
+                    .setCode(1)
                     .build();
             ShutdownResponse response = namenode.shutdown(request);
             System.out.println("接收到NameNode返回的关闭响应：" + response.getStatus());
@@ -58,7 +58,7 @@ public class FileSystemImpl implements FileSystem {
             fileSystem.mkdir("/usr/warehouse/hive"+i);
         }*/
 
-        /*for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             new Thread(() -> {
                 for (int j = 1; j <= 50; j++) {
                     fileSystem.mkdir("/usr/warehouse/hive-"+ Thread.currentThread().getName()+"-"+j);
@@ -66,8 +66,8 @@ public class FileSystemImpl implements FileSystem {
             }).start();
         }
 
-        Thread.sleep(100000);*/
-        fileSystem.shutdown();
+        Thread.sleep(100000);
+        /*fileSystem.shutdown();*/
     }
 
 }
