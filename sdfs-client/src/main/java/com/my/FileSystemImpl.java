@@ -48,15 +48,15 @@ public class FileSystemImpl implements FileSystem {
 
     public static void main(String[] args) throws InterruptedException {
         FileSystem fileSystem = new FileSystemImpl();
-
-        /*fileSystem.mkdir("/usr");
+/*
+        *//*fileSystem.mkdir("/usr");
         fileSystem.mkdir("/usr/warehouse/hive");
         fileSystem.mkdir("/usr/warehouse/spark");
-        fileSystem.mkdir("/bin");*/
+        fileSystem.mkdir("/bin");*//*
 
-        /*for (int i = 0; i < 20; i++) {
+        *//*for (int i = 0; i < 20; i++) {
             fileSystem.mkdir("/usr/warehouse/hive"+i);
-        }*/
+        }*//*
 
         for (int i = 1; i <= 10; i++) {
             new Thread(() -> {
@@ -66,8 +66,8 @@ public class FileSystemImpl implements FileSystem {
             }).start();
         }
 
-        Thread.sleep(100000);
-        /*fileSystem.shutdown();*/
+        Thread.sleep(100000);*/
+        fileSystem.shutdown();
     }
 
 }

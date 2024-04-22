@@ -101,6 +101,7 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
     public void shutdown(ShutdownRequest request, StreamObserver<ShutdownResponse> responseObserver) {
         isRunning = false;
         fsNameSystem.shutdown();
+        fsNameSystem.saveCheckpointTxid();
 
         ShutdownResponse response = ShutdownResponse.newBuilder()
                 .setStatus(STATUS_SUCCESS)
