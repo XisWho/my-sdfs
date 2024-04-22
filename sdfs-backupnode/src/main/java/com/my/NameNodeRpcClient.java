@@ -24,9 +24,9 @@ public class NameNodeRpcClient {
         this.namenode = NameNodeServiceGrpc.newBlockingStub(channel);
     }
 
-    public JSONArray fetchEditsLog() {
+    public JSONArray fetchEditsLog(long syncedTxid) {
         FetchEditsLogRequest request = FetchEditsLogRequest.newBuilder()
-                .setCode(1)
+                .setSyncedTxid(syncedTxid)
                 .build();
 
         FetchEditsLogResponse response = namenode.fetchEditsLog(request);

@@ -22,4 +22,12 @@ public class FSNamesystem {
         return directory.getFSImage();
     }
 
+    /**
+     * 获取当前同步到的最大的txid
+     * @return
+     */
+    public long getSyncedTxid() {
+        return directory.getFSImage().getMaxTxid();
+    }
+
 }

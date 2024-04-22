@@ -92,29 +92,29 @@ public final class NameNodeRpcProto {
       "\034\n\014MkdirRequest\022\014\n\004path\030\001 \001(\t\"\037\n\rMkdirRe" +
       "sponse\022\016\n\006status\030\001 \001(\005\"\037\n\017ShutdownReques" +
       "t\022\014\n\004code\030\001 \001(\005\"\"\n\020ShutdownResponse\022\016\n\006s" +
-      "tatus\030\001 \001(\005\"$\n\024FetchEditsLogRequest\022\014\n\004c",
-      "ode\030\001 \001(\005\")\n\025FetchEditsLogResponse\022\020\n\010ed" +
-      "itsLog\030\001 \001(\t\"+\n\033UpdateCheckpointTxidRequ" +
-      "est\022\014\n\004txid\030\001 \001(\003\".\n\034UpdateCheckpointTxi" +
-      "dResponse\022\016\n\006status\030\001 \001(\0052\221\005\n\017NameNodeSe" +
-      "rvice\022a\n\010register\022).com.my.rpc.grpc.name" +
-      "node.RegisterRequest\032*.com.my.rpc.grpc.n" +
-      "amenode.RegisterResponse\022d\n\theartbeat\022*." +
-      "com.my.rpc.grpc.namenode.HeartbeatReques" +
-      "t\032+.com.my.rpc.grpc.namenode.HeartbeatRe" +
-      "sponse\022X\n\005mkdir\022&.com.my.rpc.grpc.nameno",
-      "de.MkdirRequest\032\'.com.my.rpc.grpc.nameno" +
-      "de.MkdirResponse\022a\n\010shutdown\022).com.my.rp" +
-      "c.grpc.namenode.ShutdownRequest\032*.com.my" +
-      ".rpc.grpc.namenode.ShutdownResponse\022p\n\rf" +
-      "etchEditsLog\022..com.my.rpc.grpc.namenode." +
-      "FetchEditsLogRequest\032/.com.my.rpc.grpc.n" +
-      "amenode.FetchEditsLogResponse\022\205\001\n\024update" +
-      "CheckpointTxid\0225.com.my.rpc.grpc.namenod" +
-      "e.UpdateCheckpointTxidRequest\0326.com.my.r" +
-      "pc.grpc.namenode.UpdateCheckpointTxidRes",
-      "ponseB.\n\030com.my.rpc.grpc.namenodeB\020NameN" +
-      "odeRpcProtoP\001b\006proto3"
+      "tatus\030\001 \001(\005\"*\n\024FetchEditsLogRequest\022\022\n\ns",
+      "yncedTxid\030\001 \001(\003\")\n\025FetchEditsLogResponse" +
+      "\022\020\n\010editsLog\030\001 \001(\t\"+\n\033UpdateCheckpointTx" +
+      "idRequest\022\014\n\004txid\030\001 \001(\003\".\n\034UpdateCheckpo" +
+      "intTxidResponse\022\016\n\006status\030\001 \001(\0052\221\005\n\017Name" +
+      "NodeService\022a\n\010register\022).com.my.rpc.grp" +
+      "c.namenode.RegisterRequest\032*.com.my.rpc." +
+      "grpc.namenode.RegisterResponse\022d\n\theartb" +
+      "eat\022*.com.my.rpc.grpc.namenode.Heartbeat" +
+      "Request\032+.com.my.rpc.grpc.namenode.Heart" +
+      "beatResponse\022X\n\005mkdir\022&.com.my.rpc.grpc.",
+      "namenode.MkdirRequest\032\'.com.my.rpc.grpc." +
+      "namenode.MkdirResponse\022a\n\010shutdown\022).com" +
+      ".my.rpc.grpc.namenode.ShutdownRequest\032*." +
+      "com.my.rpc.grpc.namenode.ShutdownRespons" +
+      "e\022p\n\rfetchEditsLog\022..com.my.rpc.grpc.nam" +
+      "enode.FetchEditsLogRequest\032/.com.my.rpc." +
+      "grpc.namenode.FetchEditsLogResponse\022\205\001\n\024" +
+      "updateCheckpointTxid\0225.com.my.rpc.grpc.n" +
+      "amenode.UpdateCheckpointTxidRequest\0326.co" +
+      "m.my.rpc.grpc.namenode.UpdateCheckpointT",
+      "xidResponseB.\n\030com.my.rpc.grpc.namenodeB" +
+      "\020NameNodeRpcProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -181,7 +181,7 @@ public final class NameNodeRpcProto {
     internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_my_rpc_grpc_namenode_FetchEditsLogRequest_descriptor,
-        new java.lang.String[] { "Code", });
+        new java.lang.String[] { "SyncedTxid", });
     internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_com_my_rpc_grpc_namenode_FetchEditsLogResponse_fieldAccessorTable = new
