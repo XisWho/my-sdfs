@@ -75,6 +75,16 @@ public class DataNodeManager implements LifeCycle {
     }
 
     /**
+     * 获取DataNode信息
+     * @param ip
+     * @param hostname
+     * @return
+     */
+    public DataNodeInfo getDatanode(String ip, String hostname) {
+        return datanodes.get(ip + "_" + hostname);
+    }
+
+    /**
      * 根据心跳检查Datanode是否存活的任务线程
      */
     class DatanodeActiveCheckThread extends Thread {

@@ -23,10 +23,21 @@ public class FSNameSystem {
      * 最近一次checkpoint更新到的txid，对应fsimage保存到的最大txid
      */
     private long checkpointTxid;
+    /**
+     * 每个文件对应的副本所在的DataNode，key是文件名
+     */
+    private Map<String, List<DataNodeInfo>> replicasByFilename =
+            new HashMap<String, List<DataNodeInfo>>();
 
-    public FSNameSystem() {
+    /**
+     * 数据节点管理组件
+     */
+    private DataNodeManager datanodeManager;
+
+    public FSNameSystem(DataNodeManager datanodeManager) {
         fsDirectory = new FSDirectory();
         fsEditlog = new FSEditlog(this);
+        this.datanodeManager = datanodeManager;
         recoverNamespace();
     }
 
@@ -266,5 +277,21 @@ public class FSNameSystem {
         }
         fsEditlog.logEdit(EditLogFactory.create(filename));
         return true;
+    }
+
+    public void addReceivedReplica(String hostname, String ip, String filename) {
+        synchronized(replicasByFilename) {
+            List<DataNodeInfo> replicas = replicasByFilename.get(filename);
+            if(replicas == null) {
+                replicas = new ArrayList<DataNodeInfo>();
+                replicasByFilename.put(filename, replicas);
+            }
+
+            DataNodeInfo datanode = datanodeManager.getDatanode(ip, hostname);
+
+            replicas.add(datanode);
+
+            System.out.println("收到增量上报，当前的副本信息为：" + replicasByFilename);
+        }
     }
 }

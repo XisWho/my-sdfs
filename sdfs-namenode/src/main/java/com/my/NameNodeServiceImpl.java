@@ -355,4 +355,34 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         responseObserver.onCompleted();
     }
 
+    /**
+     * 数据节点通知自己接收到了文件副本
+     */
+    @Override
+    public void informReplicaReceived(InformReplicaReceivedRequest request,
+                                      StreamObserver<InformReplicaReceivedResponse> responseObserver) {
+        String hostname = request.getHostname();
+        String ip = request.getIp();
+        String filename = request.getFilename();
+
+        InformReplicaReceivedResponse response = null;
+
+        try {
+            fsNameSystem.addReceivedReplica(hostname, ip, filename);
+
+            response = InformReplicaReceivedResponse.newBuilder()
+                    .setStatus(STATUS_SUCCESS)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            response = InformReplicaReceivedResponse.newBuilder()
+                    .setStatus(STATUS_FAILURE)
+                    .build();
+        }
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
 }

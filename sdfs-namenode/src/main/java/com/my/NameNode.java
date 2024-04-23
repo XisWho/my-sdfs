@@ -11,7 +11,7 @@ public class NameNode implements LifeCycle {
 
     public NameNode() {
         this.datanodeManager = new DataNodeManager();
-        this.fsNameSystem = new FSNameSystem();
+        this.fsNameSystem = new FSNameSystem(this.datanodeManager);
         this.namenodeRpcServer = new NameNodeRpcServer(datanodeManager, fsNameSystem);
         this.fsImageUploadServer = new FSImageUploadServer();
     }

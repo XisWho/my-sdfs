@@ -12,8 +12,15 @@ public class Client implements LifeCycle {
 
     @Override
     public void start() {
-        transport.register();
+        Boolean registerResult = transport.register();
         transport.startHeartbeat();
     }
 
+    public Transport getTransport() {
+        return transport;
+    }
+
+    public void setTransport(Transport transport) {
+        this.transport = transport;
+    }
 }

@@ -9,7 +9,7 @@ public class DataNode implements LifeCycle {
         client = new Client();
         client.init();
 
-        DataNodeNIOServer nioServer = new DataNodeNIOServer();
+        DataNodeNIOServer nioServer = new DataNodeNIOServer(client.getTransport());
         nioServer.start();
     }
 
