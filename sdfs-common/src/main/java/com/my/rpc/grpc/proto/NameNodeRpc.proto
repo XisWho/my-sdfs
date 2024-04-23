@@ -20,6 +20,7 @@ service NameNodeService {
 message RegisterRequest {
   string ip = 1;
   string hostname = 2;
+  int32 nioPort = 3;
 }
 message RegisterResponse {
   int32 status = 1;
@@ -28,6 +29,7 @@ message RegisterResponse {
 message HeartbeatRequest {
   string ip = 1;
   string hostname = 2;
+  int32 nioPort = 3;
 }
 message HeartbeatResponse {
   int32 status = 1;

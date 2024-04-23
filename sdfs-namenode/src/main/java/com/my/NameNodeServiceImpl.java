@@ -47,6 +47,7 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         DataNodeInfo datanodeInfo = new DataNodeInfo();
         datanodeInfo.setIp(request.getIp());
         datanodeInfo.setHostname(request.getHostname());
+        datanodeInfo.setNioPort(request.getNioPort());
         datanodeManager.register(datanodeInfo);
 
         RegisterResponse response = RegisterResponse.newBuilder()
@@ -62,6 +63,7 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         DataNodeInfo datanodeInfo = new DataNodeInfo();
         datanodeInfo.setIp(request.getIp());
         datanodeInfo.setHostname(request.getHostname());
+        datanodeInfo.setNioPort(request.getNioPort());
         datanodeManager.heartbeat(datanodeInfo);
 
         HeartbeatResponse response = HeartbeatResponse.newBuilder()

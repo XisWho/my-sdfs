@@ -42,6 +42,7 @@ public class DataNodeManager implements LifeCycle {
         String key = ip + "_" + hostname;
         DataNodeInfo registeredDataNodeInfo = datanodes.get(key);
         registeredDataNodeInfo.setLatestHeartbeatTime(System.currentTimeMillis());
+        registeredDataNodeInfo.setNioPort(datanodeInfo.getNioPort());
     }
 
     public List<DataNodeInfo> allocateDataNodes(long fileSize) {

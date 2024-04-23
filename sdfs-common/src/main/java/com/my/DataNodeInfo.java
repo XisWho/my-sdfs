@@ -11,6 +11,11 @@ public class DataNodeInfo implements Comparable<DataNodeInfo> {
 
     private String hostname;
 
+    /**
+     * NIO端口
+     */
+    private int nioPort;
+
     private long latestHeartbeatTime;
 
     /**
