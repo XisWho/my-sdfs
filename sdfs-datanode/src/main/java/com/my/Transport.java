@@ -1,5 +1,7 @@
 package com.my;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.my.rpc.grpc.namenode.*;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.NegotiationType;
@@ -10,6 +12,12 @@ import static com.my.DataNodeConfig.*;
 public class Transport implements LifeCycle {
 
     private NameNodeServiceGrpc.NameNodeServiceBlockingStub namenode;
+
+    private StorageManager storageManager;
+
+    public Transport(StorageManager storageManager) {
+        this.storageManager = storageManager;
+    }
 
     @Override
     public void init() {
@@ -57,6 +65,24 @@ public class Transport implements LifeCycle {
         new HeartbeatThread().start();
     }
 
+    public void reportCompleteStorageInfo(StorageInfo storageInfo) {
+        if(storageInfo == null) {
+            System.out.println("当前没有存储任何文件，不需要全量上报.....");
+            return;
+        }
+
+        ReportCompleteStorageInfoRequest request = ReportCompleteStorageInfoRequest.newBuilder()
+                .setIp(DATANODE_IP)
+                .setHostname(DATANODE_HOSTNAME)
+                .setFilenames(JSONArray.toJSONString(storageInfo.getFilenames()))
+                .setStoredDataSize(storageInfo.getStoredDataSize())
+                .build();
+
+        namenode.reportCompleteStorageInfo(request);
+
+        System.out.println("全量上报存储信息：" + storageInfo);
+    }
+
     /**
      * 负责心跳的线程
      * @author zhonghuashishan
@@ -76,8 +102,28 @@ public class Transport implements LifeCycle {
                             .setHostname(DATANODE_HOSTNAME)
                             .setNioPort(NIO_PORT)
                             .build();
+                    // 通过RPC接口发送到NameNode他的注册接口上去
                     HeartbeatResponse response = namenode.heartbeat(request);
-                    System.out.println("接收到NameNode返回的心跳响应：" + response.getStatus());
+
+                    // 如果心跳失败了
+                    if(response.getStatus() == 2) {
+                        JSONArray commands = JSONArray.parseArray(response.getCommands());
+
+                        for(int i = 0; i < commands.size(); i++) {
+                            JSONObject command = commands.getJSONObject(i);
+                            Integer type = command.getInteger("type");
+
+                            // 如果是注册的命令
+                            if(type.equals(1)) {
+                                register();
+                            }
+                            // 如果是全量上报的命令
+                            else if(type.equals(2)) {
+                                StorageInfo storageInfo = storageManager.getStorageInfo();
+                                reportCompleteStorageInfo(storageInfo);
+                            }
+                        }
+                    }
 
                     Thread.sleep(30 * 1000); // 每隔30秒发送一次心跳到NameNode上去
                 }

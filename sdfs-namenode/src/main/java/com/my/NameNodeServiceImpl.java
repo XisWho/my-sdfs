@@ -8,6 +8,7 @@ import io.grpc.stub.StreamObserver;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService {
@@ -48,11 +49,19 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         datanodeInfo.setIp(request.getIp());
         datanodeInfo.setHostname(request.getHostname());
         datanodeInfo.setNioPort(request.getNioPort());
-        datanodeManager.register(datanodeInfo);
+        boolean registerResult = datanodeManager.register(datanodeInfo);
 
-        RegisterResponse response = RegisterResponse.newBuilder()
-                .setStatus(STATUS_SUCCESS)
-                .build();
+        RegisterResponse response = null;
+
+        if(registerResult) {
+            response = RegisterResponse.newBuilder()
+                    .setStatus(STATUS_SUCCESS)
+                    .build();
+        } else {
+            response = RegisterResponse.newBuilder()
+                    .setStatus(STATUS_FAILURE)
+                    .build();
+        }
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -64,11 +73,28 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         datanodeInfo.setIp(request.getIp());
         datanodeInfo.setHostname(request.getHostname());
         datanodeInfo.setNioPort(request.getNioPort());
-        datanodeManager.heartbeat(datanodeInfo);
+        boolean heartbeatResult = datanodeManager.heartbeat(datanodeInfo);
 
-        HeartbeatResponse response = HeartbeatResponse.newBuilder()
-                .setStatus(STATUS_SUCCESS)
-                .build();
+        HeartbeatResponse response = null;
+        List<Command> commands = new ArrayList<Command>();
+
+        if(heartbeatResult) {
+            response = HeartbeatResponse.newBuilder()
+                    .setStatus(STATUS_SUCCESS)
+                    .setCommands(JSONArray.toJSONString(commands))
+                    .build();
+        } else {
+            Command registerCommand = new Command(Command.REGISTER);
+            Command reportCompleteStorageInfoCommand = new Command(
+                    Command.REPORT_COMPLETE_STORAGE_INFO);
+            commands.add(registerCommand);
+            commands.add(reportCompleteStorageInfoCommand);
+
+            response = HeartbeatResponse.newBuilder()
+                    .setStatus(STATUS_FAILURE)
+                    .setCommands(JSONArray.toJSONString(commands))
+                    .build();
+        }
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -381,6 +407,32 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
                     .build();
         }
 
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    /**
+     * 上报全量存储信息
+     */
+    @Override
+    public void reportCompleteStorageInfo(ReportCompleteStorageInfoRequest request,
+                                          StreamObserver<ReportCompleteStorageInfoResponse> responseObserver) {
+        String ip = request.getIp();
+        String hostname = request.getHostname();
+        String filenamesJson = request.getFilenames();
+        Long storedDataSize = request.getStoredDataSize();
+
+        datanodeManager.setStoredDataSize(ip, hostname, storedDataSize);
+
+        JSONArray filenames = JSONArray.parseArray(filenamesJson);
+        for(int i = 0; i < filenames.size(); i++) {
+            String filename = filenames.getString(i);
+            fsNameSystem.addReceivedReplica(hostname, ip, filename);
+        }
+
+        ReportCompleteStorageInfoResponse response = ReportCompleteStorageInfoResponse.newBuilder()
+                .setStatus(STATUS_SUCCESS)
+                .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

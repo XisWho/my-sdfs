@@ -102,6 +102,15 @@ public class NameNodeServiceGrpc {
               "com.my.rpc.grpc.namenode.NameNodeService", "informReplicaReceived"),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.InformReplicaReceivedRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.InformReplicaReceivedResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest,
+      com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse> METHOD_REPORT_COMPLETE_STORAGE_INFO =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.my.rpc.grpc.namenode.NameNodeService", "reportCompleteStorageInfo"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse.getDefaultInstance()));
 
   public static NameNodeServiceStub newStub(io.grpc.Channel channel) {
     return new NameNodeServiceStub(channel);
@@ -145,6 +154,9 @@ public class NameNodeServiceGrpc {
 
     public void informReplicaReceived(com.my.rpc.grpc.namenode.InformReplicaReceivedRequest request,
         io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.InformReplicaReceivedResponse> responseObserver);
+
+    public void reportCompleteStorageInfo(com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse> responseObserver);
   }
 
   public static interface NameNodeServiceBlockingClient {
@@ -166,6 +178,8 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.AllocateDataNodesResponse allocateDataNodes(com.my.rpc.grpc.namenode.AllocateDataNodesRequest request);
 
     public com.my.rpc.grpc.namenode.InformReplicaReceivedResponse informReplicaReceived(com.my.rpc.grpc.namenode.InformReplicaReceivedRequest request);
+
+    public com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse reportCompleteStorageInfo(com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest request);
   }
 
   public static interface NameNodeServiceFutureClient {
@@ -196,6 +210,9 @@ public class NameNodeServiceGrpc {
 
     public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.InformReplicaReceivedResponse> informReplicaReceived(
         com.my.rpc.grpc.namenode.InformReplicaReceivedRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse> reportCompleteStorageInfo(
+        com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest request);
   }
 
   public static class NameNodeServiceStub extends io.grpc.stub.AbstractStub<NameNodeServiceStub>
@@ -277,6 +294,13 @@ public class NameNodeServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_INFORM_REPLICA_RECEIVED, getCallOptions()), request, responseObserver);
     }
+
+    @java.lang.Override
+    public void reportCompleteStorageInfo(com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_REPORT_COMPLETE_STORAGE_INFO, getCallOptions()), request, responseObserver);
+    }
   }
 
   public static class NameNodeServiceBlockingStub extends io.grpc.stub.AbstractStub<NameNodeServiceBlockingStub>
@@ -348,6 +372,12 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.InformReplicaReceivedResponse informReplicaReceived(com.my.rpc.grpc.namenode.InformReplicaReceivedRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_INFORM_REPLICA_RECEIVED, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse reportCompleteStorageInfo(com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_REPORT_COMPLETE_STORAGE_INFO, getCallOptions(), request);
     }
   }
 
@@ -430,6 +460,13 @@ public class NameNodeServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_INFORM_REPLICA_RECEIVED, getCallOptions()), request);
     }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse> reportCompleteStorageInfo(
+        com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_REPORT_COMPLETE_STORAGE_INFO, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_REGISTER = 0;
@@ -441,6 +478,7 @@ public class NameNodeServiceGrpc {
   private static final int METHODID_CREATE_FILE = 6;
   private static final int METHODID_ALLOCATE_DATA_NODES = 7;
   private static final int METHODID_INFORM_REPLICA_RECEIVED = 8;
+  private static final int METHODID_REPORT_COMPLETE_STORAGE_INFO = 9;
 
   private static class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -493,6 +531,10 @@ public class NameNodeServiceGrpc {
         case METHODID_INFORM_REPLICA_RECEIVED:
           serviceImpl.informReplicaReceived((com.my.rpc.grpc.namenode.InformReplicaReceivedRequest) request,
               (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.InformReplicaReceivedResponse>) responseObserver);
+          break;
+        case METHODID_REPORT_COMPLETE_STORAGE_INFO:
+          serviceImpl.reportCompleteStorageInfo((com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest) request,
+              (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -575,6 +617,13 @@ public class NameNodeServiceGrpc {
               com.my.rpc.grpc.namenode.InformReplicaReceivedRequest,
               com.my.rpc.grpc.namenode.InformReplicaReceivedResponse>(
                 serviceImpl, METHODID_INFORM_REPLICA_RECEIVED)))
+        .addMethod(
+          METHOD_REPORT_COMPLETE_STORAGE_INFO,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.my.rpc.grpc.namenode.ReportCompleteStorageInfoRequest,
+              com.my.rpc.grpc.namenode.ReportCompleteStorageInfoResponse>(
+                serviceImpl, METHODID_REPORT_COMPLETE_STORAGE_INFO)))
         .build();
   }
 }

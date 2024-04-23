@@ -28,21 +28,36 @@ public class DataNodeManager implements LifeCycle {
      * Datanode注册
      * @param datanodeInfo
      */
-    public void register(DataNodeInfo datanodeInfo) {
+    public boolean register(DataNodeInfo datanodeInfo) {
         String ip = datanodeInfo.getIp();
         String hostname = datanodeInfo.getHostname();
         String key = ip + "_" + hostname;
+
+        if(datanodes.containsKey(key)) {
+            System.out.println("注册失败，当前已经存在这个DataNode了......");
+            return false;
+        }
+
         datanodeInfo.setLatestHeartbeatTime(System.currentTimeMillis());
         datanodes.put(key, datanodeInfo);
+        return true;
     }
 
-    public void heartbeat(DataNodeInfo datanodeInfo) {
+    public boolean heartbeat(DataNodeInfo datanodeInfo) {
         String ip = datanodeInfo.getIp();
         String hostname = datanodeInfo.getHostname();
         String key = ip + "_" + hostname;
         DataNodeInfo registeredDataNodeInfo = datanodes.get(key);
+
+        if(registeredDataNodeInfo == null) {
+            // 这个时候就需要指示DataNode重新注册以及全量上报
+            System.out.println("心跳失败，需要重新注册.......");
+            return false;
+        }
+
         registeredDataNodeInfo.setLatestHeartbeatTime(System.currentTimeMillis());
         registeredDataNodeInfo.setNioPort(datanodeInfo.getNioPort());
+        return true;
     }
 
     public List<DataNodeInfo> allocateDataNodes(long fileSize) {
@@ -82,6 +97,17 @@ public class DataNodeManager implements LifeCycle {
      */
     public DataNodeInfo getDatanode(String ip, String hostname) {
         return datanodes.get(ip + "_" + hostname);
+    }
+
+    /**
+     * 设置一个DataNode的存储数据的大小
+     * @param ip
+     * @param hostname
+     * @param storedDataSize
+     */
+    public void setStoredDataSize(String ip, String hostname, Long storedDataSize) {
+        DataNodeInfo datanode = datanodes.get(ip + "_" + hostname);
+        datanode.setStoredDataSize(storedDataSize);
     }
 
     /**

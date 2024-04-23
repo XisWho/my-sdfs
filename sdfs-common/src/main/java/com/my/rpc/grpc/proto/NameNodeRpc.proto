@@ -16,6 +16,8 @@ service NameNodeService {
   rpc createFile(CreateFileRequest) returns (CreateFileResponse);
   rpc allocateDataNodes(AllocateDataNodesRequest) returns (AllocateDataNodesResponse);
   rpc informReplicaReceived(InformReplicaReceivedRequest) returns (InformReplicaReceivedResponse);
+  rpc reportCompleteStorageInfo(ReportCompleteStorageInfoRequest) returns (ReportCompleteStorageInfoResponse);
+
 }
 
 message RegisterRequest {
@@ -34,6 +36,7 @@ message HeartbeatRequest {
 }
 message HeartbeatResponse {
   int32 status = 1;
+  string commands = 2;
 }
 
 message MkdirRequest {
@@ -84,6 +87,16 @@ message InformReplicaReceivedRequest {
   string filename = 3;
 }
 message InformReplicaReceivedResponse {
+  int32 status = 1;
+}
+
+message ReportCompleteStorageInfoRequest {
+  string ip = 1;
+  string hostname = 2;
+  string filenames = 3;
+  int64 storedDataSize = 4;
+}
+message ReportCompleteStorageInfoResponse {
   int32 status = 1;
 }
 
