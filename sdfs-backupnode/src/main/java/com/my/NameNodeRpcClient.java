@@ -1,10 +1,6 @@
 package com.my;
 
 import com.alibaba.fastjson.JSONArray;
-import com.my.rpc.grpc.namenode.FetchEditsLogRequest;
-import com.my.rpc.grpc.namenode.FetchEditsLogResponse;
-import com.my.rpc.grpc.namenode.NameNodeServiceGrpc;
-import com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;

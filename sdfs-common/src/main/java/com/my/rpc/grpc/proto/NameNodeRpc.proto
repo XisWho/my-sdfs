@@ -14,6 +14,7 @@ service NameNodeService {
   rpc fetchEditsLog(FetchEditsLogRequest) returns (FetchEditsLogResponse);
   rpc updateCheckpointTxid(UpdateCheckpointTxidRequest) returns (UpdateCheckpointTxidResponse);
   rpc createFile(CreateFileRequest) returns (CreateFileResponse);
+  rpc allocateDataNodes(AllocateDataNodesRequest) returns (AllocateDataNodesResponse);
 }
 
 message RegisterRequest {
@@ -65,6 +66,13 @@ message CreateFileRequest {
 }
 message CreateFileResponse {
   int32 status = 1;
+}
+
+message AllocateDataNodesRequest {
+  int64 fileSize = 1;
+}
+message AllocateDataNodesResponse {
+  string datanodes = 1;
 }
 
 // 执行命令

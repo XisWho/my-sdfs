@@ -1,6 +1,6 @@
 package com.my;
 
-public class Bootstrap {
+public class NameNodeBootstrap {
 
     public static void main(String[] args) {
         NameNode namenode = new NameNode();

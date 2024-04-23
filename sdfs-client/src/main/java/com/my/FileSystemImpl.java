@@ -59,6 +59,7 @@ public class FileSystemImpl implements FileSystem {
         // 就是你要考虑自己上传几个副本，找对应副本数量的数据节点的地址
         // 尽可能在分配数据节点的时候，保证每个数据节点放的数据量是比较均衡的
         // 保证集群里各个机器上放的数据比较均衡
+        String dataNodes = allocateDataNodes(1000);
 
         // 依次把文件的副本上传到各个数据节点上去
         // 还要考虑到，如果上传的过程中，某个数据节点他上传失败
@@ -77,6 +78,15 @@ public class FileSystemImpl implements FileSystem {
             return true;
         }
         return false;
+    }
+
+    private String allocateDataNodes(long fileSize) {
+        AllocateDataNodesRequest request = AllocateDataNodesRequest.newBuilder()
+                .setFileSize(fileSize)
+                .build();
+        AllocateDataNodesResponse response = namenode.allocateDataNodes(request);
+        System.out.println("分配的datanodes=" + response.getDatanodes());
+        return response.getDatanodes();
     }
 
     public static void main(String[] args) throws InterruptedException {

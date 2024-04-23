@@ -59,8 +59,8 @@ public class Transport implements LifeCycle {
                 // 比如说当前这台机器的ip地址、hostname，这两个东西假设是写在配置文件里的
                 // 我们写代码的时候，主要是在本地来运行和测试，有一些ip和hostname，就直接在代码里写死了
                 // 大家后面自己可以留空做一些完善，你可以加一些配置文件读取的代码
-                String ip = "127.0.0.1";
-                String hostname = "datanode01";
+                String ip = "127.0.0.2";
+                String hostname = "datanode02";
                 // 通过RPC接口发送到NameNode他的注册接口上去
 
                 RegisterRequest request = RegisterRequest.newBuilder()
@@ -89,8 +89,8 @@ public class Transport implements LifeCycle {
                 while(true) {
                     System.out.println("发送RPC请求到NameNode进行心跳.......");
 
-                    String ip = "127.0.0.1";
-                    String hostname = "datanode01";
+                    String ip = "127.0.0.2";
+                    String hostname = "datanode02";
                     // 通过RPC接口发送到NameNode他的注册接口上去
 
                     HeartbeatRequest request = HeartbeatRequest.newBuilder()
