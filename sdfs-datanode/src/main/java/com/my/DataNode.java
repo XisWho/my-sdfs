@@ -8,6 +8,9 @@ public class DataNode implements LifeCycle {
     public void init() {
         client = new Client();
         client.init();
+
+        DataNodeNIOServer nioServer = new DataNodeNIOServer();
+        nioServer.start();
     }
 
     @Override

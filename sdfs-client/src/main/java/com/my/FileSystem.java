@@ -6,6 +6,6 @@ public interface FileSystem {
 
     void shutdown();
 
-    boolean upload(byte[] file, String filename);
+    boolean upload(byte[] file, String filename, long fileSize);
 
 }

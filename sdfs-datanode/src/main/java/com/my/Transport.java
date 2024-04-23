@@ -87,14 +87,11 @@ public class Transport implements LifeCycle {
             try {
                 while(true) {
                     System.out.println("发送RPC请求到NameNode进行心跳.......");
-
-                    String ip = "127.0.0.2";
-                    String hostname = "datanode02";
                     // 通过RPC接口发送到NameNode他的注册接口上去
 
                     HeartbeatRequest request = HeartbeatRequest.newBuilder()
-                            .setIp(ip)
-                            .setHostname(hostname)
+                            .setIp(DATANODE_IP)
+                            .setHostname(DATANODE_HOSTNAME)
                             .setNioPort(NIO_PORT)
                             .build();
                     HeartbeatResponse response = namenode.heartbeat(request);
