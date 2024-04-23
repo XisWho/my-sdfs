@@ -161,4 +161,11 @@ public class FSNamesystem {
         }
     }
 
+    public Boolean createFile(long txid, String filename) throws Exception {
+        if(!directory.createFile(txid, filename)) {
+            return false;
+        }
+        return true;
+    }
+
 }

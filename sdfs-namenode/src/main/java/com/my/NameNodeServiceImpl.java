@@ -15,6 +15,7 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
     public static final Integer STATUS_SUCCESS = 1;
     public static final Integer STATUS_FAILURE = 2;
     public static final Integer STATUS_SHUTDOWN = 3;
+    public static final Integer STATUS_DUPLICATE = 4;
 
     public static final Integer BACKUP_NODE_FETCH_SIZE = 10;
 
@@ -302,4 +303,40 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void createFile(CreateFileRequest request, StreamObserver<CreateFileResponse> responseObserver) {
+        // 把文件名的查重和创建文件放在一起来执行
+        // 如果说很多个客户端万一同时要发起文件创建，都有一个文件名过来
+        // 多线程并发的情况下，文件名的查重和创建都是正确执行的
+        // 就必须得在同步的代码块来执行这个功能逻辑
+        try {
+            CreateFileResponse response = null;
+
+            if(!isRunning) {
+                response = CreateFileResponse.newBuilder()
+                        .setStatus(STATUS_SHUTDOWN)
+                        .build();
+            } else {
+                String filename = request.getFilename();
+                Boolean success = fsNameSystem.createFile(filename);
+
+                if(success) {
+                    response = CreateFileResponse.newBuilder()
+                            .setStatus(STATUS_SUCCESS)
+                            .build();
+                } else {
+                    response = CreateFileResponse.newBuilder()
+                            .setStatus(STATUS_DUPLICATE)
+                            .build();
+                }
+            }
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

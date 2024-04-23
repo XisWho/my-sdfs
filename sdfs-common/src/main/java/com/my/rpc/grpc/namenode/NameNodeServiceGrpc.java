@@ -75,6 +75,15 @@ public class NameNodeServiceGrpc {
               "com.my.rpc.grpc.namenode.NameNodeService", "updateCheckpointTxid"),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.my.rpc.grpc.namenode.CreateFileRequest,
+      com.my.rpc.grpc.namenode.CreateFileResponse> METHOD_CREATE_FILE =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.my.rpc.grpc.namenode.NameNodeService", "createFile"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.CreateFileRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.CreateFileResponse.getDefaultInstance()));
 
   public static NameNodeServiceStub newStub(io.grpc.Channel channel) {
     return new NameNodeServiceStub(channel);
@@ -109,6 +118,9 @@ public class NameNodeServiceGrpc {
 
     public void updateCheckpointTxid(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request,
         io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse> responseObserver);
+
+    public void createFile(com.my.rpc.grpc.namenode.CreateFileRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.CreateFileResponse> responseObserver);
   }
 
   public static interface NameNodeServiceBlockingClient {
@@ -124,6 +136,8 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.FetchEditsLogResponse fetchEditsLog(com.my.rpc.grpc.namenode.FetchEditsLogRequest request);
 
     public com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse updateCheckpointTxid(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request);
+
+    public com.my.rpc.grpc.namenode.CreateFileResponse createFile(com.my.rpc.grpc.namenode.CreateFileRequest request);
   }
 
   public static interface NameNodeServiceFutureClient {
@@ -145,6 +159,9 @@ public class NameNodeServiceGrpc {
 
     public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse> updateCheckpointTxid(
         com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.CreateFileResponse> createFile(
+        com.my.rpc.grpc.namenode.CreateFileRequest request);
   }
 
   public static class NameNodeServiceStub extends io.grpc.stub.AbstractStub<NameNodeServiceStub>
@@ -205,6 +222,13 @@ public class NameNodeServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_UPDATE_CHECKPOINT_TXID, getCallOptions()), request, responseObserver);
     }
+
+    @java.lang.Override
+    public void createFile(com.my.rpc.grpc.namenode.CreateFileRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.CreateFileResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_CREATE_FILE, getCallOptions()), request, responseObserver);
+    }
   }
 
   public static class NameNodeServiceBlockingStub extends io.grpc.stub.AbstractStub<NameNodeServiceBlockingStub>
@@ -258,6 +282,12 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse updateCheckpointTxid(com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_UPDATE_CHECKPOINT_TXID, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.my.rpc.grpc.namenode.CreateFileResponse createFile(com.my.rpc.grpc.namenode.CreateFileRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_CREATE_FILE, getCallOptions(), request);
     }
   }
 
@@ -319,6 +349,13 @@ public class NameNodeServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_UPDATE_CHECKPOINT_TXID, getCallOptions()), request);
     }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.CreateFileResponse> createFile(
+        com.my.rpc.grpc.namenode.CreateFileRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_CREATE_FILE, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_REGISTER = 0;
@@ -327,6 +364,7 @@ public class NameNodeServiceGrpc {
   private static final int METHODID_SHUTDOWN = 3;
   private static final int METHODID_FETCH_EDITS_LOG = 4;
   private static final int METHODID_UPDATE_CHECKPOINT_TXID = 5;
+  private static final int METHODID_CREATE_FILE = 6;
 
   private static class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -367,6 +405,10 @@ public class NameNodeServiceGrpc {
         case METHODID_UPDATE_CHECKPOINT_TXID:
           serviceImpl.updateCheckpointTxid((com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest) request,
               (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse>) responseObserver);
+          break;
+        case METHODID_CREATE_FILE:
+          serviceImpl.createFile((com.my.rpc.grpc.namenode.CreateFileRequest) request,
+              (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.CreateFileResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -428,6 +470,13 @@ public class NameNodeServiceGrpc {
               com.my.rpc.grpc.namenode.UpdateCheckpointTxidRequest,
               com.my.rpc.grpc.namenode.UpdateCheckpointTxidResponse>(
                 serviceImpl, METHODID_UPDATE_CHECKPOINT_TXID)))
+        .addMethod(
+          METHOD_CREATE_FILE,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.my.rpc.grpc.namenode.CreateFileRequest,
+              com.my.rpc.grpc.namenode.CreateFileResponse>(
+                serviceImpl, METHODID_CREATE_FILE)))
         .build();
   }
 }

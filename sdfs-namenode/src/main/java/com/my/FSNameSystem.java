@@ -260,4 +260,11 @@ public class FSNameSystem {
         }
     }
 
+    public Boolean createFile(String filename) {
+        if(!fsDirectory.createFile(filename)) {
+            return false;
+        }
+        fsEditlog.logEdit(EditLogFactory.create(filename));
+        return true;
+    }
 }

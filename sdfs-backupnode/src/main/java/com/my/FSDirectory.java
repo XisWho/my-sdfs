@@ -77,6 +77,67 @@ public class FSDirectory {
     }
 
     /**
+     * 创建文件
+     * @param filename 文件名
+     * @return
+     */
+    public Boolean createFile(long txid, String filename) {
+        // /image/product/img001.jpg
+        // 其实完全可以把前面的路径部分截取出来，去找对应的目录
+        try {
+            readWriteLock.writeLock().lock();
+
+            maxTxid = txid;
+
+            String[] splitedFilename = filename.split("/");
+            String realFilename = splitedFilename[splitedFilename.length - 1];
+
+            INode parent = dirTree;
+
+            for(int i = 0; i < splitedFilename.length - 1; i++) {
+                if(i == 0) {
+                    continue;
+                }
+
+                INode dir = findDirectory(parent, splitedFilename[i]);
+
+                if(dir != null) {
+                    parent = dir;
+                    continue;
+                }
+
+                INode child = new INode(splitedFilename[i]);
+                parent.addChild(child);
+                parent = child;
+            }
+
+            // 此时就已经获取到了文件的上一级目录
+            // 可以查找一下当前这个目录下面是否有对应的文件了
+            if(existFile(parent, realFilename)) {
+                return false;
+            }
+
+            // 真正的在目录里创建一个文件出来
+            INode file = new INode(realFilename);
+            parent.addChild(file);
+            return true;
+        } finally {
+            readWriteLock.writeLock().unlock();
+        }
+    }
+
+    private Boolean existFile(INode dir, String filename) {
+        if(dir.getChildren() != null && dir.getChildren().size() > 0) {
+            for(INode child : dir.getChildren()) {
+                if(child.getPath().equals(filename)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * 查找子目录
      * @param dir
      * @param path
