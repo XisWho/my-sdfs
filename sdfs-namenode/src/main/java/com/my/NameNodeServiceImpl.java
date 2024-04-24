@@ -437,4 +437,20 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         responseObserver.onCompleted();
     }
 
+    /**
+     * 获取文件的某个副本所在的DataNode
+     */
+    @Override
+    public void getDataNodeForFile(GetDataNodeForFileRequest request,
+                                   StreamObserver<GetDataNodeForFileResponse> responseObserver) {
+        String filename = request.getFilename();
+        DataNodeInfo datanode = fsNameSystem.getDataNodeForFile(filename);
+
+        GetDataNodeForFileResponse response = GetDataNodeForFileResponse.newBuilder()
+                .setDatanodeInfo(JSONObject.toJSONString(datanode))
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
 }

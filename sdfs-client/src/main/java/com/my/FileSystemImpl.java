@@ -9,6 +9,7 @@ import io.grpc.netty.NettyChannelBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -82,6 +83,35 @@ public class FileSystemImpl implements FileSystem {
         return true;
     }
 
+    @Override
+    public byte[] download(String filename) {
+        // 第一个步骤，一定是调用NameNode的接口，获取这个文件的某个副本所在的DataNode
+        JSONObject datanode = getDataNodeForFile(filename);
+        System.out.println("Master分配用来下载文件的数据节点：" + datanode.toJSONString());
+
+        // 第二个步骤，打开一个针对那个DataNode的网络连接，发送文件名过去
+        // 第三个步骤，尝试从连接中读取对方传输过来的文件
+        // 第四个步骤，读取到文件之后不需要写入本地的磁盘中，而是转换为一个字节数组返回即可
+
+        String hostname = datanode.getString("hostname");
+        Integer nioPort = datanode.getInteger("nioPort");
+        return NIOClient.readFile(hostname, nioPort, filename);
+    }
+
+    /**
+     * 获取文件的某个副本所在的机器
+     * @param filename
+     * @return
+     * @throws Exception
+     */
+    private JSONObject getDataNodeForFile(String filename) {
+        GetDataNodeForFileRequest request = GetDataNodeForFileRequest.newBuilder()
+                .setFilename(filename)
+                .build();
+        GetDataNodeForFileResponse response = namenode.getDataNodeForFile(request);
+        return JSONObject.parseObject(response.getDatanodeInfo());
+    }
+
     private boolean createFile(String filename) {
         CreateFileRequest request = CreateFileRequest.newBuilder()
                 .setFilename(filename)
@@ -117,7 +147,8 @@ public class FileSystemImpl implements FileSystem {
         Thread.sleep(100000);
          // fileSystem.shutdown();*/
 
-        testCreateFile();
+        // testCreateFile();
+        testReadFile();
     }
 
     private static void testCreateFile() throws Exception {
@@ -138,6 +169,19 @@ public class FileSystemImpl implements FileSystem {
 
         imageIn.close();
         imageChannel.close();
+    }
+
+    private static void testReadFile() throws Exception {
+        FileSystem fileSystem = new FileSystemImpl();
+        byte[] image = fileSystem.download("/image/product/iphone.jpg");
+        ByteBuffer buffer = ByteBuffer.wrap(image);
+
+        FileOutputStream imageOut = new FileOutputStream("E:\\code\\java-code\\my-project\\my-sdfs\\tmp\\iphone.jpg");
+        FileChannel imageChannel = imageOut.getChannel();
+        imageChannel.write(buffer);
+
+        imageChannel.close();
+        imageOut.close();
     }
 
 }

@@ -8,4 +8,6 @@ public interface FileSystem {
 
     boolean upload(byte[] file, String filename, long fileSize);
 
+    byte[] download(String filename);
+
 }

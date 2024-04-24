@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.my.FSDirectory.INode;
 
@@ -33,6 +34,8 @@ public class FSNameSystem {
      * 数据节点管理组件
      */
     private DataNodeManager datanodeManager;
+
+    private ReentrantReadWriteLock replicasByFilenameLock = new ReentrantReadWriteLock();
 
     public FSNameSystem(DataNodeManager datanodeManager) {
         fsDirectory = new FSDirectory();
@@ -280,7 +283,8 @@ public class FSNameSystem {
     }
 
     public void addReceivedReplica(String hostname, String ip, String filename) {
-        synchronized(replicasByFilename) {
+        try {
+            replicasByFilenameLock.writeLock().lock();
             List<DataNodeInfo> replicas = replicasByFilename.get(filename);
             if(replicas == null) {
                 replicas = new ArrayList<DataNodeInfo>();
@@ -292,6 +296,29 @@ public class FSNameSystem {
             replicas.add(datanode);
 
             System.out.println("收到增量上报，当前的副本信息为：" + replicasByFilename);
+        } finally {
+            replicasByFilenameLock.writeLock().unlock();
+        }
+    }
+
+    /**
+     * 获取文件的某个副本所在的机器
+     * @param filename
+     * @return
+     */
+    public DataNodeInfo getDataNodeForFile(String filename) {
+        try {
+            replicasByFilenameLock.readLock().lock();
+
+            List<DataNodeInfo> datanodes = replicasByFilename.get(filename);
+            int size = datanodes.size();
+
+            Random random = new Random();
+            int index = random.nextInt(size);
+
+            return datanodes.get(index);
+        } finally {
+            replicasByFilenameLock.readLock().lock();
         }
     }
 }

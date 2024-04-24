@@ -17,7 +17,7 @@ service NameNodeService {
   rpc allocateDataNodes(AllocateDataNodesRequest) returns (AllocateDataNodesResponse);
   rpc informReplicaReceived(InformReplicaReceivedRequest) returns (InformReplicaReceivedResponse);
   rpc reportCompleteStorageInfo(ReportCompleteStorageInfoRequest) returns (ReportCompleteStorageInfoResponse);
-
+  rpc getDataNodeForFile(GetDataNodeForFileRequest) returns (GetDataNodeForFileResponse);
 }
 
 message RegisterRequest {
@@ -98,6 +98,13 @@ message ReportCompleteStorageInfoRequest {
 }
 message ReportCompleteStorageInfoResponse {
   int32 status = 1;
+}
+
+message GetDataNodeForFileRequest {
+  string filename = 1;
+}
+message GetDataNodeForFileResponse {
+  string datanodeInfo = 1;
 }
 
 // 执行命令
