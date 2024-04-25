@@ -338,17 +338,29 @@ public class FSNameSystem {
      * @param filename
      * @return
      */
-    public DataNodeInfo getDataNodeForFile(String filename) {
+    public DataNodeInfo getDataNodeForFile(String filename, String excludedDataNodeId) {
         try {
             replicasByFilenameLock.readLock().lock();
 
+            DataNodeInfo excludedDataNode = datanodeManager.getDatanode(excludedDataNodeId);
+
             List<DataNodeInfo> datanodes = replicasByFilename.get(filename);
+            if(datanodes.size() == 1) {
+                if(datanodes.get(0).equals(excludedDataNode)) {
+                    return null;
+                }
+            }
+
             int size = datanodes.size();
-
             Random random = new Random();
-            int index = random.nextInt(size);
 
-            return datanodes.get(index);
+            while(true) {
+                int index = random.nextInt(size);
+                DataNodeInfo datanode = datanodes.get(index);
+                if(!datanode.equals(excludedDataNode)) {
+                    return datanode;
+                }
+            }
         } finally {
             replicasByFilenameLock.readLock().lock();
         }

@@ -18,6 +18,7 @@ service NameNodeService {
   rpc informReplicaReceived(InformReplicaReceivedRequest) returns (InformReplicaReceivedResponse);
   rpc reportCompleteStorageInfo(ReportCompleteStorageInfoRequest) returns (ReportCompleteStorageInfoResponse);
   rpc getDataNodeForFile(GetDataNodeForFileRequest) returns (GetDataNodeForFileResponse);
+  rpc reallocateDataNode(ReallocateDataNodeRequest) returns (ReallocateDataNodeResponse);
 }
 
 message RegisterRequest {
@@ -102,9 +103,19 @@ message ReportCompleteStorageInfoResponse {
 
 message GetDataNodeForFileRequest {
   string filename = 1;
+  string excludedDataNodeId = 2;
 }
 message GetDataNodeForFileResponse {
   string datanodeInfo = 1;
+}
+
+message ReallocateDataNodeRequest {
+  int64 fileSize = 1;
+  string excludedDataNodeId = 2;
+}
+
+message ReallocateDataNodeResponse {
+    string datanode = 1;
 }
 
 // 执行命令

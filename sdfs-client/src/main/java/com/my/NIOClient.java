@@ -23,7 +23,7 @@ public class NIOClient {
 	 * @param file
 	 * @param fileSize
 	 */
-	public static void sendFile(String hostname, int nioPort,
+	public static Boolean sendFile(String hostname, int nioPort,
 								byte[] file, String filename, long fileSize) {
 		// 建立一个短连接，发送完一个文件就释放网络连接
 		Selector selector = null;
@@ -194,6 +194,7 @@ public class NIOClient {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		} finally{
 			if(channel != null){
 				try {
@@ -211,6 +212,7 @@ public class NIOClient {
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -219,7 +221,7 @@ public class NIOClient {
 	 * @param nioPort 数据节点的nio端口号
 	 * @param filename 文件名
 	 */
-	public static byte[] readFile(String hostname, int nioPort, String filename) {
+	public static byte[] readFile(String hostname, int nioPort, String filename) throws IOException, InterruptedException {
 		ByteBuffer fileLengthBuffer = null;
 		Long fileLength = null;
 		ByteBuffer fileBuffer = null;
@@ -332,6 +334,7 @@ public class NIOClient {
 			return file;
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		} finally{
 			if(channel != null){
 				try {
@@ -349,8 +352,6 @@ public class NIOClient {
 				}
 			}
 		}
-
-		return null;
 	}
 
 }

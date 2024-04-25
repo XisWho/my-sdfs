@@ -3,19 +3,14 @@
 
 package com.my.rpc.grpc.namenode;
 
-public interface GetDataNodeForFileRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.my.rpc.grpc.namenode.GetDataNodeForFileRequest)
+public interface ReallocateDataNodeRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.my.rpc.grpc.namenode.ReallocateDataNodeRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>optional string filename = 1;</code>
+   * <code>optional int64 fileSize = 1;</code>
    */
-  java.lang.String getFilename();
-  /**
-   * <code>optional string filename = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getFilenameBytes();
+  long getFileSize();
 
   /**
    * <code>optional string excludedDataNodeId = 2;</code>

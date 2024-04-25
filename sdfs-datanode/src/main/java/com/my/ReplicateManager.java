@@ -68,23 +68,17 @@ public class ReplicateManager {
 					
 					// 解析复制任务
 					String filename = replicateTask.getString("filename");
-					System.out.println("file--------="+filename);
-					System.out.println("DIR-------="+DATA_DIR);
-					Long fileLength = replicateTask.getLong("fileLength"); 
+					Long fileLength = replicateTask.getLong("fileLength");
 					
 					JSONObject sourceDatanode = replicateTask.getJSONObject("sourceDatanode");
 					String hostname = sourceDatanode.getString("hostname"); 
 					Integer nioPort = sourceDatanode.getInteger("nioPort");
 
-					System.out.println("DIR2-------="+DATA_DIR);
-					
 					// 跟源头数据接头通信读取图片过来
 					byte[] file = nioClient.readFile(hostname, nioPort, filename);
 					ByteBuffer fileBuffer = ByteBuffer.wrap(file);
 					System.out.println("从源头数据节点读取到图片，大小为：" + file.length + "字节");
 
-					System.out.println("DIR3-------="+DATA_DIR);
-					
 					// 根据文件的相对路径定位到绝对路径，写入本地磁盘文件中
 					String absoluteFilename = FileUtils.getAbsoluteFilename(filename, DATA_DIR);
 					imageOut = new FileOutputStream(absoluteFilename);    

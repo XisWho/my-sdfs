@@ -124,6 +124,16 @@ public final class NameNodeRpcProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_my_rpc_grpc_namenode_GetDataNodeForFileResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -159,43 +169,50 @@ public final class NameNodeRpcProto {
       "eStorageInfoRequest\022\n\n\002ip\030\001 \001(\t\022\020\n\010hostn" +
       "ame\030\002 \001(\t\022\021\n\tfilenames\030\003 \001(\t\022\026\n\016storedDa" +
       "taSize\030\004 \001(\003\"3\n!ReportCompleteStorageInf" +
-      "oResponse\022\016\n\006status\030\001 \001(\005\"-\n\031GetDataNode" +
-      "ForFileRequest\022\020\n\010filename\030\001 \001(\t\"2\n\032GetD" +
-      "ataNodeForFileResponse\022\024\n\014datanodeInfo\030\001" +
-      " \001(\t2\233\n\n\017NameNodeService\022a\n\010register\022).c",
-      "om.my.rpc.grpc.namenode.RegisterRequest\032" +
-      "*.com.my.rpc.grpc.namenode.RegisterRespo" +
-      "nse\022d\n\theartbeat\022*.com.my.rpc.grpc.namen" +
-      "ode.HeartbeatRequest\032+.com.my.rpc.grpc.n" +
-      "amenode.HeartbeatResponse\022X\n\005mkdir\022&.com" +
-      ".my.rpc.grpc.namenode.MkdirRequest\032\'.com" +
-      ".my.rpc.grpc.namenode.MkdirResponse\022a\n\010s" +
-      "hutdown\022).com.my.rpc.grpc.namenode.Shutd" +
-      "ownRequest\032*.com.my.rpc.grpc.namenode.Sh" +
-      "utdownResponse\022p\n\rfetchEditsLog\022..com.my",
-      ".rpc.grpc.namenode.FetchEditsLogRequest\032" +
-      "/.com.my.rpc.grpc.namenode.FetchEditsLog" +
-      "Response\022\205\001\n\024updateCheckpointTxid\0225.com." +
-      "my.rpc.grpc.namenode.UpdateCheckpointTxi" +
-      "dRequest\0326.com.my.rpc.grpc.namenode.Upda" +
-      "teCheckpointTxidResponse\022g\n\ncreateFile\022+" +
-      ".com.my.rpc.grpc.namenode.CreateFileRequ" +
-      "est\032,.com.my.rpc.grpc.namenode.CreateFil" +
-      "eResponse\022|\n\021allocateDataNodes\0222.com.my." +
-      "rpc.grpc.namenode.AllocateDataNodesReque",
-      "st\0323.com.my.rpc.grpc.namenode.AllocateDa" +
-      "taNodesResponse\022\210\001\n\025informReplicaReceive" +
-      "d\0226.com.my.rpc.grpc.namenode.InformRepli" +
-      "caReceivedRequest\0327.com.my.rpc.grpc.name" +
-      "node.InformReplicaReceivedResponse\022\224\001\n\031r" +
-      "eportCompleteStorageInfo\022:.com.my.rpc.gr" +
-      "pc.namenode.ReportCompleteStorageInfoReq" +
-      "uest\032;.com.my.rpc.grpc.namenode.ReportCo" +
-      "mpleteStorageInfoResponse\022\177\n\022getDataNode" +
-      "ForFile\0223.com.my.rpc.grpc.namenode.GetDa",
-      "taNodeForFileRequest\0324.com.my.rpc.grpc.n" +
-      "amenode.GetDataNodeForFileResponseB.\n\030co" +
-      "m.my.rpc.grpc.namenodeB\020NameNodeRpcProto" +
+      "oResponse\022\016\n\006status\030\001 \001(\005\"I\n\031GetDataNode" +
+      "ForFileRequest\022\020\n\010filename\030\001 \001(\t\022\032\n\022excl" +
+      "udedDataNodeId\030\002 \001(\t\"2\n\032GetDataNodeForFi" +
+      "leResponse\022\024\n\014datanodeInfo\030\001 \001(\t\"I\n\031Real",
+      "locateDataNodeRequest\022\020\n\010fileSize\030\001 \001(\003\022" +
+      "\032\n\022excludedDataNodeId\030\002 \001(\t\".\n\032Reallocat" +
+      "eDataNodeResponse\022\020\n\010datanode\030\001 \001(\t2\234\013\n\017" +
+      "NameNodeService\022a\n\010register\022).com.my.rpc" +
+      ".grpc.namenode.RegisterRequest\032*.com.my." +
+      "rpc.grpc.namenode.RegisterResponse\022d\n\the" +
+      "artbeat\022*.com.my.rpc.grpc.namenode.Heart" +
+      "beatRequest\032+.com.my.rpc.grpc.namenode.H" +
+      "eartbeatResponse\022X\n\005mkdir\022&.com.my.rpc.g" +
+      "rpc.namenode.MkdirRequest\032\'.com.my.rpc.g",
+      "rpc.namenode.MkdirResponse\022a\n\010shutdown\022)" +
+      ".com.my.rpc.grpc.namenode.ShutdownReques" +
+      "t\032*.com.my.rpc.grpc.namenode.ShutdownRes" +
+      "ponse\022p\n\rfetchEditsLog\022..com.my.rpc.grpc" +
+      ".namenode.FetchEditsLogRequest\032/.com.my." +
+      "rpc.grpc.namenode.FetchEditsLogResponse\022" +
+      "\205\001\n\024updateCheckpointTxid\0225.com.my.rpc.gr" +
+      "pc.namenode.UpdateCheckpointTxidRequest\032" +
+      "6.com.my.rpc.grpc.namenode.UpdateCheckpo" +
+      "intTxidResponse\022g\n\ncreateFile\022+.com.my.r",
+      "pc.grpc.namenode.CreateFileRequest\032,.com" +
+      ".my.rpc.grpc.namenode.CreateFileResponse" +
+      "\022|\n\021allocateDataNodes\0222.com.my.rpc.grpc." +
+      "namenode.AllocateDataNodesRequest\0323.com." +
+      "my.rpc.grpc.namenode.AllocateDataNodesRe" +
+      "sponse\022\210\001\n\025informReplicaReceived\0226.com.m" +
+      "y.rpc.grpc.namenode.InformReplicaReceive" +
+      "dRequest\0327.com.my.rpc.grpc.namenode.Info" +
+      "rmReplicaReceivedResponse\022\224\001\n\031reportComp" +
+      "leteStorageInfo\022:.com.my.rpc.grpc.nameno",
+      "de.ReportCompleteStorageInfoRequest\032;.co" +
+      "m.my.rpc.grpc.namenode.ReportCompleteSto" +
+      "rageInfoResponse\022\177\n\022getDataNodeForFile\0223" +
+      ".com.my.rpc.grpc.namenode.GetDataNodeFor" +
+      "FileRequest\0324.com.my.rpc.grpc.namenode.G" +
+      "etDataNodeForFileResponse\022\177\n\022reallocateD" +
+      "ataNode\0223.com.my.rpc.grpc.namenode.Reall" +
+      "ocateDataNodeRequest\0324.com.my.rpc.grpc.n" +
+      "amenode.ReallocateDataNodeResponseB.\n\030co" +
+      "m.my.rpc.grpc.namenodeB\020NameNodeRpcProto",
       "P\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
@@ -335,13 +352,25 @@ public final class NameNodeRpcProto {
     internal_static_com_my_rpc_grpc_namenode_GetDataNodeForFileRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_my_rpc_grpc_namenode_GetDataNodeForFileRequest_descriptor,
-        new java.lang.String[] { "Filename", });
+        new java.lang.String[] { "Filename", "ExcludedDataNodeId", });
     internal_static_com_my_rpc_grpc_namenode_GetDataNodeForFileResponse_descriptor =
       getDescriptor().getMessageTypes().get(21);
     internal_static_com_my_rpc_grpc_namenode_GetDataNodeForFileResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_my_rpc_grpc_namenode_GetDataNodeForFileResponse_descriptor,
         new java.lang.String[] { "DatanodeInfo", });
+    internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeRequest_descriptor =
+      getDescriptor().getMessageTypes().get(22);
+    internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeRequest_descriptor,
+        new java.lang.String[] { "FileSize", "ExcludedDataNodeId", });
+    internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeResponse_descriptor =
+      getDescriptor().getMessageTypes().get(23);
+    internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_my_rpc_grpc_namenode_ReallocateDataNodeResponse_descriptor,
+        new java.lang.String[] { "Datanode", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -467,10 +467,24 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
     public void getDataNodeForFile(GetDataNodeForFileRequest request,
                                    StreamObserver<GetDataNodeForFileResponse> responseObserver) {
         String filename = request.getFilename();
-        DataNodeInfo datanode = fsNameSystem.getDataNodeForFile(filename);
+        String excludedDataNodeId = request.getExcludedDataNodeId();
+        DataNodeInfo datanode = fsNameSystem.getDataNodeForFile(filename, excludedDataNodeId);
 
         GetDataNodeForFileResponse response = GetDataNodeForFileResponse.newBuilder()
                 .setDatanodeInfo(JSONObject.toJSONString(datanode))
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void reallocateDataNode(ReallocateDataNodeRequest request, StreamObserver<ReallocateDataNodeResponse> responseObserver) {
+        long fileSize = request.getFileSize();
+        String excludedDataNodeId = request.getExcludedDataNodeId();
+        DataNodeInfo datanode = datanodeManager.reallocateDataNode(fileSize, excludedDataNodeId);
+
+        ReallocateDataNodeResponse response = ReallocateDataNodeResponse.newBuilder()
+                .setDatanode(JSONObject.toJSONString(datanode))
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();

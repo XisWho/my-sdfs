@@ -10,6 +10,7 @@ import io.grpc.netty.NettyChannelBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -55,7 +56,7 @@ public class FileSystemImpl implements FileSystem {
     }
 
     @Override
-    public boolean upload(byte[] file, String fileName, long fileSize) {
+    public boolean upload(byte[] file, String fileName, long fileSize) throws Exception {
         // 必须先用filename发送一个RPC接口调用到master节点
         // 去尝试在文件目录树里创建一个文件
         // 此时还需要进行查重，如果这个文件已经存在，就不让你上传了
@@ -77,16 +78,42 @@ public class FileSystemImpl implements FileSystem {
             JSONObject datanode = datanodes.getJSONObject(i);
             String hostname = datanode.getString("hostname");
             int nioPort = datanode.getIntValue("nioPort");
-            NIOClient.sendFile(hostname, nioPort, file, fileName, fileSize);
+            String ip = datanode.getString("ip");
+
+            if(!NIOClient.sendFile(hostname, nioPort, file, fileName, fileSize)) {
+                datanode = JSONObject.parseObject(
+                        reallocateDataNode(fileName, fileSize, ip + "-" + hostname));
+                hostname = datanode.getString("hostname");
+                nioPort = datanode.getIntValue("nioPort");
+                if(!NIOClient.sendFile(hostname, nioPort, file, fileName, fileSize)) {
+                    throw new Exception("file upload failed......");
+                }
+            }
         }
 
         return true;
     }
 
+    /**
+     * 重新分配一个数据节点
+     * @param filename
+     * @param fileSize
+     * @return
+     */
+    private String reallocateDataNode(String filename, long fileSize,
+                                      String excludedDataNodeId) {
+        ReallocateDataNodeRequest request = ReallocateDataNodeRequest.newBuilder()
+                .setFileSize(fileSize)
+                .setExcludedDataNodeId(excludedDataNodeId)
+                .build();
+        ReallocateDataNodeResponse response = namenode.reallocateDataNode(request);
+        return response.getDatanode();
+    }
+
     @Override
-    public byte[] download(String filename) {
+    public byte[] download(String filename) throws IOException, InterruptedException {
         // 第一个步骤，一定是调用NameNode的接口，获取这个文件的某个副本所在的DataNode
-        JSONObject datanode = getDataNodeForFile(filename);
+        JSONObject datanode = getDataNodeForFile(filename, "");
         System.out.println("Master分配用来下载文件的数据节点：" + datanode.toJSONString());
 
         // 第二个步骤，打开一个针对那个DataNode的网络连接，发送文件名过去
@@ -95,7 +122,25 @@ public class FileSystemImpl implements FileSystem {
 
         String hostname = datanode.getString("hostname");
         Integer nioPort = datanode.getInteger("nioPort");
-        return NIOClient.readFile(hostname, nioPort, filename);
+        String ip = datanode.getString("ip");
+
+        byte[] file = null;
+
+        try {
+            file = NIOClient.readFile(hostname, nioPort, filename);
+        } catch (Exception e) {
+            datanode = getDataNodeForFile(filename, ip + "_" + hostname);
+            hostname = datanode.getString("hostname");
+            nioPort = datanode.getInteger("nioPort");
+
+            try {
+                file = NIOClient.readFile(hostname, nioPort, filename);
+            } catch (Exception e2) {
+                throw e2;
+            }
+        }
+
+        return file;
     }
 
     /**
@@ -104,9 +149,10 @@ public class FileSystemImpl implements FileSystem {
      * @return
      * @throws Exception
      */
-    private JSONObject getDataNodeForFile(String filename) {
+    private JSONObject getDataNodeForFile(String filename, String excludedDataNodeId) {
         GetDataNodeForFileRequest request = GetDataNodeForFileRequest.newBuilder()
                 .setFilename(filename)
+                .setExcludedDataNodeId(excludedDataNodeId)
                 .build();
         GetDataNodeForFileResponse response = namenode.getDataNodeForFile(request);
         return JSONObject.parseObject(response.getDatanodeInfo());

@@ -106,6 +106,14 @@ public class DataNodeManager implements LifeCycle {
     }
 
     /**
+     * 获取DataNode信息
+     * @return
+     */
+    public DataNodeInfo getDatanode(String id) {
+        return datanodes.get(id);
+    }
+
+    /**
      * 设置一个DataNode的存储数据的大小
      * @param ip
      * @param hostname
@@ -114,6 +122,32 @@ public class DataNodeManager implements LifeCycle {
     public void setStoredDataSize(String ip, String hostname, Long storedDataSize) {
         DataNodeInfo datanode = datanodes.get(ip + "_" + hostname);
         datanode.setStoredDataSize(storedDataSize);
+    }
+
+    public DataNodeInfo reallocateDataNode(long fileSize, String excludedDataNodeId) {
+        synchronized(this) {
+            // 先得把排除掉的那个数据节点的存储的数据量减少文件的大小
+            DataNodeInfo excludedDataNode = datanodes.get(excludedDataNodeId);
+            excludedDataNode.addStoredDataSize(-fileSize);
+
+            // 取出来所有的datanode，并且按照已经存储的数据大小来排序
+            List<DataNodeInfo> datanodeList = new ArrayList<DataNodeInfo>();
+            for(DataNodeInfo datanode : datanodes.values()) {
+                if(!excludedDataNode.equals(datanode)) {
+                    datanodeList.add(datanode);
+                }
+            }
+            Collections.sort(datanodeList);
+
+            // 选择存储数据最少的一个datanode出来
+            DataNodeInfo selectedDatanode = null;
+            if(datanodeList.size() >= 1) {
+                selectedDatanode = datanodeList.get(0);
+                datanodeList.get(0).addStoredDataSize(fileSize);
+            }
+
+            return selectedDatanode;
+        }
     }
 
     /**
