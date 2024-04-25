@@ -7,16 +7,31 @@ import io.grpc.ManagedChannel;
 import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
 
+import java.io.File;
+
 import static com.my.DataNodeConfig.*;
 
 public class Transport implements LifeCycle {
+
+    public static final Integer SUCCESS = 1;
+    public static final Integer FAILURE = 2;
+    public static final Integer COMMAND_REGISTER = 1;
+    public static final Integer COMMAND_REPORT_COMPLETE_STORAGE_INFO = 2;
+    public static final Integer COMMAND_REPLICATE = 3;
+    public static final Integer COMMAND_REMOVE_REPLICA = 4;
 
     private NameNodeServiceGrpc.NameNodeServiceBlockingStub namenode;
 
     private StorageManager storageManager;
 
+    private ReplicateManager replicateManager;
+
     public Transport(StorageManager storageManager) {
         this.storageManager = storageManager;
+    }
+
+    public void setReplicateManager(ReplicateManager replicateManager) {
+        this.replicateManager = replicateManager;
     }
 
     @Override
@@ -35,6 +50,7 @@ public class Transport implements LifeCycle {
     public boolean register() {
         // 发送rpc接口调用请求到NameNode去进行注册
         System.out.println("发送RPC请求到NameNode进行注册.......");
+        System.out.println("DATA_DIR="+DATA_DIR);
 
         // 在这里进行注册的时候会提供哪些信息过去呢？
         // 比如说当前这台机器的ip地址、hostname，这两个东西假设是写在配置文件里的
@@ -104,6 +120,31 @@ public class Transport implements LifeCycle {
                             .build();
                     // 通过RPC接口发送到NameNode他的注册接口上去
                     HeartbeatResponse response = namenode.heartbeat(request);
+
+                    if(SUCCESS.equals(response.getStatus())) {
+                        JSONArray commands = JSONArray.parseArray(response.getCommands());
+
+                        if(commands.size() > 0) {
+                            for(int i = 0; i < commands.size(); i++) {
+                                JSONObject command = commands.getJSONObject(i);
+                                Integer type = command.getInteger("type");
+                                JSONObject task = command.getJSONObject("content");
+
+                                if(type.equals(COMMAND_REPLICATE)) {
+                                    replicateManager.addReplicateTask(task);
+                                    System.out.println("接收副本复制任务，" + command);
+                                } else if(type.equals(COMMAND_REMOVE_REPLICA)) {
+                                    // 删除副本
+                                    String filename = task.getString("filename");
+                                    String absoluteFilename = FileUtils.getAbsoluteFilename(filename, DATA_DIR);
+                                    File file = new File(absoluteFilename);
+                                    if(file.exists()) {
+                                        file.delete();
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     // 如果心跳失败了
                     if(response.getStatus() == 2) {

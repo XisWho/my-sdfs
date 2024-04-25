@@ -472,7 +472,7 @@ public class DataNodeNIOServer extends Thread {
 
 				// 增量上报Master节点自己接收到了一个文件的副本
 				// /image/product/iphone.jpg
-				namenodeRpcClient.informReplicaReceived(filename.relativeFilename);
+				namenodeRpcClient.informReplicaReceived(filename.relativeFilename + "_" + fileLength);
 				System.out.println("增量上报收到的文件副本给NameNode节点......");
 
 				// 取消对SelectionKey.OP_READ事件的关注

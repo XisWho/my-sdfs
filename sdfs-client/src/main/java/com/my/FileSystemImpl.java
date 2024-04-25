@@ -147,8 +147,8 @@ public class FileSystemImpl implements FileSystem {
         Thread.sleep(100000);
          // fileSystem.shutdown();*/
 
-        // testCreateFile();
-        testReadFile();
+        testCreateFile();
+        // testReadFile();
     }
 
     private static void testCreateFile() throws Exception {

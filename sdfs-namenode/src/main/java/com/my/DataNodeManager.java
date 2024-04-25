@@ -13,6 +13,12 @@ public class DataNodeManager implements LifeCycle {
 
     private Map<String, DataNodeInfo> datanodes;
 
+    private FSNameSystem namesystem;
+
+    public void setNamesystem(FSNameSystem namesystem) {
+        this.namesystem = namesystem;
+    }
+
     @Override
     public void init() {
         datanodes = new ConcurrentHashMap<>();
@@ -118,18 +124,27 @@ public class DataNodeManager implements LifeCycle {
         @Override
         public void run() {
             while (true) {
-                List<String> toRemoveDatanodeKeys = new ArrayList<>();
+                List<DataNodeInfo> toRemoveDatanodeKeys = new ArrayList<>();
                 for (Map.Entry<String, DataNodeInfo> entry : datanodes.entrySet()) {
                     String key = entry.getKey();
                     DataNodeInfo datanodeInfo = entry.getValue();
                     long interval = System.currentTimeMillis() - datanodeInfo.getLatestHeartbeatTime();
                     if (interval > datanodeInactiveInterval) {
-                        toRemoveDatanodeKeys.add(key);
+                        toRemoveDatanodeKeys.add(datanodeInfo);
                     }
                 }
 
-                for (String toRemoveDatanodeKey : toRemoveDatanodeKeys) {
-                    datanodes.remove(toRemoveDatanodeKey);
+                if(!toRemoveDatanodeKeys.isEmpty()) {
+                    for(DataNodeInfo toRemoveDatanode : toRemoveDatanodeKeys) {
+                        System.out.println("数据节点【" + toRemoveDatanode + "】宕机，需要 进行副本复制......");
+                        // 还有一个地方是在哪儿呢？就是这个叫做，我们还维护了一块是数据节点和副本的关系
+                        createLostReplicaTask(toRemoveDatanode);
+                        // 来实现DataNode宕机之后的一些处理
+                        datanodes.remove(toRemoveDatanode.getIp() + "_" + toRemoveDatanode.getHostname());
+                        System.out.println("从内存数据结构中删除掉这个数据节点，" + datanodes);
+                        // 删除掉这个数据结构
+                        namesystem.removeDeadDatanode(toRemoveDatanode);
+                    }
                 }
 
                 try {
@@ -139,7 +154,58 @@ public class DataNodeManager implements LifeCycle {
                 }
             }
         }
+    }
 
+    /**
+     * 创建丢失副本的复制任务
+     */
+    public void createLostReplicaTask(DataNodeInfo deadDatanode) {
+        List<String> files = namesystem.getFilesByDatanode(
+                deadDatanode.getIp(), deadDatanode.getHostname());
+
+        for(String file : files) {
+            String filename = file.split("_")[0];
+            Long fileLength = Long.valueOf(file.split("_")[1]);
+            // 获取这个复制任务的源头数据节点
+            DataNodeInfo sourceDatanode = namesystem.getReplicateSource(filename, deadDatanode);
+            // 复制任务的目标数据节点，第一，不能是已经死掉的节点 ；第二，不能是已经有这个副本的节点
+            DataNodeInfo destDatanode = allocateReplicateDataNode(fileLength, sourceDatanode, deadDatanode);
+
+            DataNodeInfo.ReplicateTask replicateTask = new DataNodeInfo.ReplicateTask(
+                    filename, fileLength, sourceDatanode, destDatanode);
+
+            // 将复制任务放到目标数据节点的任务队列里去
+            destDatanode.addReplicateTask(replicateTask);
+            System.out.println("为目标数据节点生成一个副本复制任务，" + replicateTask);
+        }
+    }
+
+    /**
+     * 分配用来复制副本的数据节点
+     * @param fileSize
+     * @return
+     */
+    public DataNodeInfo allocateReplicateDataNode(long fileSize,
+                                                  DataNodeInfo sourceDatanode, DataNodeInfo deadDatanode) {
+        synchronized(this) {
+            List<DataNodeInfo> datanodeList = new ArrayList<DataNodeInfo>();
+            for(DataNodeInfo datanode : datanodes.values()) {
+                if(!datanode.equals(sourceDatanode) &&
+                        !datanode.equals(deadDatanode)) {
+                    datanodeList.add(datanode);
+                }
+            }
+            Collections.sort(datanodeList);
+
+            DataNodeInfo selectedDatanode = null;
+            if(!datanodeList.isEmpty()) {
+                // 取第一个
+                selectedDatanode = datanodeList.get(0);
+                datanodeList.get(0).addStoredDataSize(fileSize);
+            }
+
+            return selectedDatanode;
+        }
     }
 
 }

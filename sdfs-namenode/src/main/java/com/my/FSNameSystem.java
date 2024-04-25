@@ -18,6 +18,12 @@ import com.my.FSDirectory.INode;
 
 public class FSNameSystem {
 
+
+    /**
+     * 副本数量
+     */
+    public static final Integer REPLICA_NUM = 2;
+
     private FSDirectory fsDirectory;
     private FSEditlog fsEditlog;
     /**
@@ -29,6 +35,11 @@ public class FSNameSystem {
      */
     private Map<String, List<DataNodeInfo>> replicasByFilename =
             new HashMap<String, List<DataNodeInfo>>();
+    /**
+     * 每个DataNode对应的所有的文件副本
+     */
+    private Map<String, List<String>> filesByDatanode =
+            new HashMap<String, List<String>>();
 
     /**
      * 数据节点管理组件
@@ -282,7 +293,7 @@ public class FSNameSystem {
         return true;
     }
 
-    public void addReceivedReplica(String hostname, String ip, String filename) {
+    public void addReceivedReplica(String hostname, String ip, String filename, long fileLength) {
         try {
             replicasByFilenameLock.writeLock().lock();
             List<DataNodeInfo> replicas = replicasByFilename.get(filename);
@@ -293,9 +304,30 @@ public class FSNameSystem {
 
             DataNodeInfo datanode = datanodeManager.getDatanode(ip, hostname);
 
+            // 检查当前文件的副本数量是否超标
+            if(replicas.size() == REPLICA_NUM) {
+                // 减少这个节点上的存储数据量
+                datanode.addStoredDataSize(-fileLength);
+
+                // 生成副本删除任务
+                DataNodeInfo.RemoveReplicaTask removeReplicaTask = new DataNodeInfo.RemoveReplicaTask(filename, datanode);
+                datanode.addRemoveReplicaTask(removeReplicaTask);
+
+                return;
+            }
+
+            // 如果副本数量未超标，才会将副本放入数据结构中
             replicas.add(datanode);
 
-            System.out.println("收到增量上报，当前的副本信息为：" + replicasByFilename);
+            // 维护每个数据节点拥有的文件副本
+            List<String> files = filesByDatanode.get(ip + "-" + hostname);
+            if(files == null) {
+                files = new ArrayList<String>();
+                filesByDatanode.put(ip + "-" + hostname, files);
+            }
+            files.add(filename + "_" + fileLength);
+
+            System.out.println("收到上报，当前的副本信息为：" + replicasByFilename+ "，" + filesByDatanode);
         } finally {
             replicasByFilenameLock.writeLock().unlock();
         }
@@ -319,6 +351,62 @@ public class FSNameSystem {
             return datanodes.get(index);
         } finally {
             replicasByFilenameLock.readLock().lock();
+        }
+    }
+
+    public List<String> getFilesByDatanode(String ip, String hostname) {
+        try {
+            replicasByFilenameLock.readLock().lock();
+
+            System.out.println("当前filesByDatanode为" + filesByDatanode + "，将要以key=" + ip + "-" +  hostname + "获取文件列表");
+
+            return filesByDatanode.get(ip + "-" + hostname);
+        } finally {
+            replicasByFilenameLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * 获取复制任务的源头数据节点
+     * @return
+     */
+    public DataNodeInfo getReplicateSource(String filename, DataNodeInfo deadDatanode) {
+        DataNodeInfo replicateSource = null;
+
+        try {
+            replicasByFilenameLock.readLock().lock();
+            List<DataNodeInfo> replicas = replicasByFilename.get(filename);
+            for(DataNodeInfo replica : replicas) {
+                if(!replica.equals(deadDatanode)) {
+                    replicateSource = replica;
+                    break;
+                }
+            }
+        } finally {
+            replicasByFilenameLock.readLock().unlock();
+        }
+
+        return replicateSource;
+    }
+
+    /**
+     * 删除数据节点的文件副本的数据结构
+     */
+    public void removeDeadDatanode(DataNodeInfo datanode) {
+        try {
+            replicasByFilenameLock.writeLock().lock();
+
+            List<String> filenames = filesByDatanode.get(datanode.getIp() + "-" + datanode.getHostname());
+            for(String filename : filenames) {
+                List<DataNodeInfo> replicas = replicasByFilename.get(filename.split("_")[0]);
+                replicas.remove(datanode);
+            }
+
+            filesByDatanode.remove(datanode.getIp() + "-" + datanode.getHostname());
+
+            System.out.println("从内存数据结构中删除掉这个数据节点关联的数据，" + replicasByFilename + "，" + filesByDatanode);
+        } finally {
+            replicasByFilenameLock.writeLock().unlock();
         }
     }
 }

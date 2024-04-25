@@ -30,7 +30,7 @@ public class StorageManager {
             // \image\product\iphone.jpg
             path = path.replace("\\", "/"); // /image/product/iphone.jpg
 
-            storageInfo.addFilename(path);
+            storageInfo.addFilename(path + "_" + dir.length());
             storageInfo.addStoredDataSize(dir.length());
 
             return;

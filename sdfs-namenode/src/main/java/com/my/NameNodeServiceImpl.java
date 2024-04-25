@@ -79,6 +79,27 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         List<Command> commands = new ArrayList<Command>();
 
         if(heartbeatResult) {
+            // 如果心跳成功了，此时应该查看一下是否有复制副本的任务
+            // 如果有，则做成命令下发给这个数据节点
+            DataNodeInfo datanode = datanodeManager.getDatanode(request.getIp(), request.getHostname());
+
+            DataNodeInfo.ReplicateTask replicateTask = null;
+            while((replicateTask = datanode.pollReplicateTask()) != null) {
+                Command replicateCommand = new Command(Command.REPLICATE);
+                replicateCommand.setContent(JSONObject.toJSONString(replicateTask));
+                commands.add(replicateCommand);
+            }
+
+            DataNodeInfo.RemoveReplicaTask removeReplicaTask = null;
+            while((removeReplicaTask = datanode.pollRemoveReplicaTask()) != null) {
+                Command removeReplicaCommand = new Command(Command.REMOVE_REPLICA);
+                removeReplicaCommand.setContent(JSONObject.toJSONString(removeReplicaTask));
+                commands.add(removeReplicaCommand);
+            }
+
+            System.out.println("接收到数据节点【" + datanode + "】的心跳，他的命令列表为：" + commands);
+
+
             response = HeartbeatResponse.newBuilder()
                     .setStatus(STATUS_SUCCESS)
                     .setCommands(JSONArray.toJSONString(commands))
@@ -394,7 +415,8 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         InformReplicaReceivedResponse response = null;
 
         try {
-            fsNameSystem.addReceivedReplica(hostname, ip, filename);
+            fsNameSystem.addReceivedReplica(hostname, ip,
+                    filename.split("_")[0], Long.valueOf(filename.split("_")[1]));
 
             response = InformReplicaReceivedResponse.newBuilder()
                     .setStatus(STATUS_SUCCESS)
@@ -427,7 +449,8 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
         JSONArray filenames = JSONArray.parseArray(filenamesJson);
         for(int i = 0; i < filenames.size(); i++) {
             String filename = filenames.getString(i);
-            fsNameSystem.addReceivedReplica(hostname, ip, filename);
+            fsNameSystem.addReceivedReplica(hostname, ip,
+                    filename.split("_")[0], Long.valueOf(filename.split("_")[1]));
         }
 
         ReportCompleteStorageInfoResponse response = ReportCompleteStorageInfoResponse.newBuilder()

@@ -9,12 +9,19 @@ public class Client implements LifeCycle {
      */
     private StorageManager storageManager;
 
+    /**
+     * 复制任务管理组件
+     */
+    private ReplicateManager replicateManager;
+
     @Override
     public void init() {
         // 如果注册成功了才会执行全量的上报
         this.storageManager = new StorageManager();
 
         transport = new Transport(this.storageManager);
+        this.replicateManager = new ReplicateManager(this.transport);
+        transport.setReplicateManager(this.replicateManager);
         transport.init();
     }
 
