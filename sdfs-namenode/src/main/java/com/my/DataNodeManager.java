@@ -150,6 +150,130 @@ public class DataNodeManager implements LifeCycle {
         }
     }
 
+    public void createRebalanceTasks() {
+        synchronized(this) {
+            // 计算集群节点存储数据的平均值
+            long totalStoredDataSize = 0;
+            for (DataNodeInfo datanode : datanodes.values()) {
+                totalStoredDataSize += datanode.getStoredDataSize();
+            }
+            long averageStoredDataSize = totalStoredDataSize / datanodes.size();
+
+            // 将集群中的节点区分为两类：迁出节点和迁入节点
+            List<DataNodeInfo> sourceDatanodes = new ArrayList<DataNodeInfo>();
+            List<DataNodeInfo> destDatanodes = new ArrayList<DataNodeInfo>();
+
+            for (DataNodeInfo datanode : datanodes.values()) {
+                if (datanode.getStoredDataSize() > averageStoredDataSize) {
+                    sourceDatanodes.add(datanode);
+                }
+                if (datanode.getStoredDataSize() < averageStoredDataSize) {
+                    destDatanodes.add(datanode);
+                }
+            }
+
+            // 为迁入节点生成复制的任务，为迁出节点生成删除的任务
+            // 在这里生成的删除任务统一放到24小时之后延迟调度执行，咱们可以实现一个延迟调度执行的线程
+            List<DataNodeInfo.RemoveReplicaTask> removeReplicaTasks = new ArrayList<DataNodeInfo.RemoveReplicaTask>();
+
+            for (DataNodeInfo sourceDatanode : sourceDatanodes) {
+                long toRemoveDataSize = sourceDatanode.getStoredDataSize() - averageStoredDataSize;
+
+                for (DataNodeInfo destDatanode : destDatanodes) {
+                    // 直接一次性放到一台机器就可以了
+                    if (destDatanode.getStoredDataSize() + toRemoveDataSize <= averageStoredDataSize) {
+                        createRebalanceTasks(sourceDatanode, destDatanode,
+                                removeReplicaTasks, toRemoveDataSize);
+                        break;
+                    }
+                    // 只能把部分数据放到这台机器上去
+                    else {
+                        long maxRemoveDataSize = averageStoredDataSize - destDatanode.getStoredDataSize();
+                        long removedDataSize = createRebalanceTasks(sourceDatanode, destDatanode,
+                                removeReplicaTasks, maxRemoveDataSize);
+                        toRemoveDataSize -= removedDataSize;
+                    }
+                }
+            }
+
+            // 交给一个延迟线程去24小时之后执行删除副本的任务
+            // 不要一开始就删除文件，延迟删除
+            new DelayRemoveReplicaThread(removeReplicaTasks).start();
+        }
+    }
+
+    /**
+     * 延迟删除副本的线程
+     *
+     */
+    class DelayRemoveReplicaThread extends Thread {
+
+        private List<DataNodeInfo.RemoveReplicaTask> removeReplicaTasks;
+
+        public DelayRemoveReplicaThread(List<DataNodeInfo.RemoveReplicaTask> removeReplicaTasks) {
+            this.removeReplicaTasks = removeReplicaTasks;
+        }
+
+        @Override
+        public void run() {
+            long start = System.currentTimeMillis();
+
+            while(true) {
+                try {
+                    long now = System.currentTimeMillis();
+
+                    if(now - start > 24 * 60 * 60 * 1000) {
+                        for(DataNodeInfo.RemoveReplicaTask removeReplicaTask : removeReplicaTasks) {
+                            removeReplicaTask.getDatanode().addRemoveReplicaTask(removeReplicaTask);
+                        }
+                        break;
+                    }
+
+                    Thread.sleep(60 * 1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private long createRebalanceTasks(DataNodeInfo sourceDatanode, DataNodeInfo destDatanode,
+                                      List<DataNodeInfo.RemoveReplicaTask> removeReplicaTasks, long maxRemoveDataSize) {
+        List<String> files = namesystem.getFilesByDatanode(sourceDatanode.getIp(),
+                sourceDatanode.getHostname());
+
+        // 遍历文件，不停的为每个文件生成一个复制的任务，直到准备迁移的文件的大小
+        // 超过了待迁移总数据量的大小为止
+        long removedDataSize = 0;
+
+        for(String file : files) {
+            String filename = file.split("_")[0];
+            long fileLength = Long.valueOf(file.split("_")[1]);
+
+            // 为这个文件生成复制任务
+            DataNodeInfo.ReplicateTask replicateTask = new DataNodeInfo.ReplicateTask(
+                    filename, fileLength, sourceDatanode, destDatanode);
+            destDatanode.addReplicateTask(replicateTask);
+            destDatanode.addStoredDataSize(fileLength);
+
+            // 为这个文件生成删除任务
+            sourceDatanode.addStoredDataSize(-fileLength);
+            namesystem.removeReplicaFromDataNode(sourceDatanode.getId(), file);
+            DataNodeInfo.RemoveReplicaTask removeReplicaTask = new DataNodeInfo.RemoveReplicaTask(
+                    filename, sourceDatanode);
+            removeReplicaTasks.add(removeReplicaTask);
+
+            removedDataSize += fileLength;
+
+            if(removedDataSize >= maxRemoveDataSize) {
+                break;
+            }
+        }
+
+        return removedDataSize;
+    }
+
     /**
      * 根据心跳检查Datanode是否存活的任务线程
      */

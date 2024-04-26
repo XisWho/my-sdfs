@@ -421,4 +421,23 @@ public class FSNameSystem {
             replicasByFilenameLock.writeLock().unlock();
         }
     }
+
+    public void removeReplicaFromDataNode(String id, String file) {
+        try {
+            replicasByFilenameLock.writeLock().lock();
+
+            filesByDatanode.get(id).remove(file);
+
+            Iterator<DataNodeInfo> replicasIterator =
+                    replicasByFilename.get(file.split("_")[0]).iterator();
+            while(replicasIterator.hasNext()) {
+                DataNodeInfo replica = replicasIterator.next();
+                if(replica.getId().equals(id)) {
+                    replicasIterator.remove();
+                }
+            }
+        } finally {
+            replicasByFilenameLock.writeLock().unlock();
+        }
+    }
 }

@@ -19,6 +19,7 @@ service NameNodeService {
   rpc reportCompleteStorageInfo(ReportCompleteStorageInfoRequest) returns (ReportCompleteStorageInfoResponse);
   rpc getDataNodeForFile(GetDataNodeForFileRequest) returns (GetDataNodeForFileResponse);
   rpc reallocateDataNode(ReallocateDataNodeRequest) returns (ReallocateDataNodeResponse);
+  rpc rebalance(RebalanceRequest) returns (RebalanceResponse);
 }
 
 message RegisterRequest {
@@ -115,7 +116,14 @@ message ReallocateDataNodeRequest {
 }
 
 message ReallocateDataNodeResponse {
-    string datanode = 1;
+  string datanode = 1;
+}
+
+message RebalanceRequest {
+}
+
+message RebalanceResponse {
+  int32 status = 1;
 }
 
 // 执行命令

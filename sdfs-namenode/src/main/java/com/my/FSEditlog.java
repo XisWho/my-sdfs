@@ -128,7 +128,6 @@ public class FSEditlog {
 
     /**
      * 自动清理editlog文件
-     * @author zhonghuashishan
      *
      */
     class EditLogCleaner extends Thread {

@@ -5,7 +5,6 @@ import java.util.List;
 
 /**
  * 存储信息
- * @author zhonghuashishan
  *
  */
 public class StorageInfo {

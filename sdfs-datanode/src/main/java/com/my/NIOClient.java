@@ -10,7 +10,6 @@ import java.util.Iterator;
 
 /**
  * 客户端的一个NIOClient，负责跟数据节点进行网络通信
- * @author zhonghuashishan
  *
  */
 public class NIOClient {

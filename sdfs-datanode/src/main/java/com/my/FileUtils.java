@@ -13,15 +13,15 @@ public class FileUtils {
 	 * @throws Exception
 	 */
 	public static String getAbsoluteFilename(String relativeFilename, String dirPath) throws Exception {
-		String[] relativeFilenameSplited = relativeFilename.split("/");
-
+		String[] relativeFilenameSplited = relativeFilename.split("/"); 
+    	
     	for(int i = 0; i < relativeFilenameSplited.length - 1; i++) {
     		if(i == 0) {
     			continue;
     		}
     		dirPath += "\\" + relativeFilenameSplited[i];
     	}
-
+    	
     	File dir = new File(dirPath);
     	if(!dir.exists()) {
     		dir.mkdirs();

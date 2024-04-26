@@ -2,7 +2,6 @@ package com.my;
 
 /**
  * 生成editlog内容的工厂类
- * @author zhonghuashishan
  *
  */
 public class EditLogFactory {

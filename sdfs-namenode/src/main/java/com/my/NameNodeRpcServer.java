@@ -1,5 +1,6 @@
 package com.my;
 
+import com.my.rpc.grpc.namenode.NameNodeServiceGrpc;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 

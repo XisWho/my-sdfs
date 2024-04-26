@@ -101,7 +101,6 @@ public class Transport implements LifeCycle {
 
     /**
      * 负责心跳的线程
-     * @author zhonghuashishan
      *
      */
     class HeartbeatThread extends Thread {

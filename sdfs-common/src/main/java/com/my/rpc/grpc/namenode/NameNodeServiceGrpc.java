@@ -129,6 +129,15 @@ public class NameNodeServiceGrpc {
               "com.my.rpc.grpc.namenode.NameNodeService", "reallocateDataNode"),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.ReallocateDataNodeRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.ReallocateDataNodeResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.my.rpc.grpc.namenode.RebalanceRequest,
+      com.my.rpc.grpc.namenode.RebalanceResponse> METHOD_REBALANCE =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.my.rpc.grpc.namenode.NameNodeService", "rebalance"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.RebalanceRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.my.rpc.grpc.namenode.RebalanceResponse.getDefaultInstance()));
 
   public static NameNodeServiceStub newStub(io.grpc.Channel channel) {
     return new NameNodeServiceStub(channel);
@@ -181,6 +190,9 @@ public class NameNodeServiceGrpc {
 
     public void reallocateDataNode(com.my.rpc.grpc.namenode.ReallocateDataNodeRequest request,
         io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.ReallocateDataNodeResponse> responseObserver);
+
+    public void rebalance(com.my.rpc.grpc.namenode.RebalanceRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.RebalanceResponse> responseObserver);
   }
 
   public static interface NameNodeServiceBlockingClient {
@@ -208,6 +220,8 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.GetDataNodeForFileResponse getDataNodeForFile(com.my.rpc.grpc.namenode.GetDataNodeForFileRequest request);
 
     public com.my.rpc.grpc.namenode.ReallocateDataNodeResponse reallocateDataNode(com.my.rpc.grpc.namenode.ReallocateDataNodeRequest request);
+
+    public com.my.rpc.grpc.namenode.RebalanceResponse rebalance(com.my.rpc.grpc.namenode.RebalanceRequest request);
   }
 
   public static interface NameNodeServiceFutureClient {
@@ -247,6 +261,9 @@ public class NameNodeServiceGrpc {
 
     public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.ReallocateDataNodeResponse> reallocateDataNode(
         com.my.rpc.grpc.namenode.ReallocateDataNodeRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.RebalanceResponse> rebalance(
+        com.my.rpc.grpc.namenode.RebalanceRequest request);
   }
 
   public static class NameNodeServiceStub extends io.grpc.stub.AbstractStub<NameNodeServiceStub>
@@ -349,6 +366,13 @@ public class NameNodeServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_REALLOCATE_DATA_NODE, getCallOptions()), request, responseObserver);
     }
+
+    @java.lang.Override
+    public void rebalance(com.my.rpc.grpc.namenode.RebalanceRequest request,
+        io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.RebalanceResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_REBALANCE, getCallOptions()), request, responseObserver);
+    }
   }
 
   public static class NameNodeServiceBlockingStub extends io.grpc.stub.AbstractStub<NameNodeServiceBlockingStub>
@@ -438,6 +462,12 @@ public class NameNodeServiceGrpc {
     public com.my.rpc.grpc.namenode.ReallocateDataNodeResponse reallocateDataNode(com.my.rpc.grpc.namenode.ReallocateDataNodeRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_REALLOCATE_DATA_NODE, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.my.rpc.grpc.namenode.RebalanceResponse rebalance(com.my.rpc.grpc.namenode.RebalanceRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_REBALANCE, getCallOptions(), request);
     }
   }
 
@@ -541,6 +571,13 @@ public class NameNodeServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_REALLOCATE_DATA_NODE, getCallOptions()), request);
     }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.my.rpc.grpc.namenode.RebalanceResponse> rebalance(
+        com.my.rpc.grpc.namenode.RebalanceRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_REBALANCE, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_REGISTER = 0;
@@ -555,6 +592,7 @@ public class NameNodeServiceGrpc {
   private static final int METHODID_REPORT_COMPLETE_STORAGE_INFO = 9;
   private static final int METHODID_GET_DATA_NODE_FOR_FILE = 10;
   private static final int METHODID_REALLOCATE_DATA_NODE = 11;
+  private static final int METHODID_REBALANCE = 12;
 
   private static class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -619,6 +657,10 @@ public class NameNodeServiceGrpc {
         case METHODID_REALLOCATE_DATA_NODE:
           serviceImpl.reallocateDataNode((com.my.rpc.grpc.namenode.ReallocateDataNodeRequest) request,
               (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.ReallocateDataNodeResponse>) responseObserver);
+          break;
+        case METHODID_REBALANCE:
+          serviceImpl.rebalance((com.my.rpc.grpc.namenode.RebalanceRequest) request,
+              (io.grpc.stub.StreamObserver<com.my.rpc.grpc.namenode.RebalanceResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -722,6 +764,13 @@ public class NameNodeServiceGrpc {
               com.my.rpc.grpc.namenode.ReallocateDataNodeRequest,
               com.my.rpc.grpc.namenode.ReallocateDataNodeResponse>(
                 serviceImpl, METHODID_REALLOCATE_DATA_NODE)))
+        .addMethod(
+          METHOD_REBALANCE,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.my.rpc.grpc.namenode.RebalanceRequest,
+              com.my.rpc.grpc.namenode.RebalanceResponse>(
+                serviceImpl, METHODID_REBALANCE)))
         .build();
   }
 }

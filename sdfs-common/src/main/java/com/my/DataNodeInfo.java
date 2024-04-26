@@ -55,6 +55,10 @@ public class DataNodeInfo implements Comparable<DataNodeInfo> {
                 '}';
     }
 
+    public String getId() {
+        return ip + "_" + hostname;
+    }
+
     /**
      * 副本复制任务队列
      */
@@ -74,7 +78,6 @@ public class DataNodeInfo implements Comparable<DataNodeInfo> {
 
     /**
      * 副本复制任务
-     * @author zhonghuashishan
      *
      */
     public static class ReplicateTask {
@@ -150,7 +153,6 @@ public class DataNodeInfo implements Comparable<DataNodeInfo> {
 
     /**
      * 删除副本任务
-     * @author zhonghuashishan
      *
      */
     public static class RemoveReplicaTask {
